@@ -1,5 +1,14 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## **PLEASE READ**
+
+This repository has protection rules on the develop and master branches, a pull request *must* be made from *another branch* to make changes.
+
+So, please make a new branch for any new features, then create a pull request when you are ready.
+
+**[Read more about pull requests here](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests)**
+
+
 ## Getting Started
 
 First, run the development server:
