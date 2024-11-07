@@ -21,6 +21,8 @@ yarn dev
 pnpm dev
 # or
 bun dev
+# or
+deno run dev
 ```
 
 Dependencies:
