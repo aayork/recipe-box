@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppSidebar } from "./components/app-sidebar";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -25,10 +27,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body>
+        <SidebarProvider>
+          <AppSidebar />
+          <main>
+            <div className="inline-flex">
+              <SidebarTrigger />
+              <h1 className="">Welcome to Recipe Box!</h1>
+            </div>
+            {children}
+          </main>
+        </SidebarProvider>
       </body>
     </html>
   );
