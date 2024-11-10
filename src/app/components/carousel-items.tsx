@@ -22,8 +22,8 @@ export function CarouselItems() {
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious className="mx-2" />
-      <CarouselNext className="mx-2" />
+      <CarouselPrevious />
+      <CarouselNext />
     </Carousel>
   );
 }
