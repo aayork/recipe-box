@@ -17,12 +17,6 @@ export function CarouselItems() {
         <CarouselItem className="basis-1/2 pl-2 md:pl-4">
           <FeaturedItem />
         </CarouselItem>
-        <CarouselItem className="basis-1/2 pl-2 md:pl-4">
-          <FeaturedItem />
-        </CarouselItem>
-        <CarouselItem className="basis-1/2 pl-2 md:pl-4">
-          <FeaturedItem />
-        </CarouselItem>
       </CarouselContent>
     </Carousel>
   );

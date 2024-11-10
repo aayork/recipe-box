@@ -12,11 +12,8 @@ export function FeaturedItem() {
   return (
     <Card>
       <div className="flex flex-row">
-        {" "}
-        {/* Added flex container */}
+        {/* Left side content */}
         <div className="flex-1">
-          {" "}
-          {/* Left side content */}
           <CardHeader>
             <CardTitle>Recipe</CardTitle>
             <CardDescription>Recipe Description</CardDescription>
@@ -31,12 +28,27 @@ export function FeaturedItem() {
         </div>
         {/* Vertical border */}
         <div className="w-px bg-gray-200"></div>
-        <div className="p-4 w-48">
-          {" "}
-          {/* Right side content */}
-          <CardContent className="flex flex-row">
-            <p className="mr-2">Ingredients</p>
-            <p className="ml-2">Steps</p>
+        {/* Right side content with lists displayed side by side */}
+        <div className="p-4 w-72">
+          <CardContent className="flex flex-row space-x-4">
+            <div className="w-1/2">
+              <p className="font-semibold mb-2">Ingredients</p>
+              <ul className="list-disc list-inside text-sm">
+                <li>2 cups pasta</li>
+                <li>1/2 cup basil</li>
+                <li>1 tsp mustard</li>
+                <li>Salt and pepper to taste</li>
+              </ul>
+            </div>
+            <div className="w-1/2">
+              <p className="font-semibold mb-2">Steps</p>
+              <ol className="list-decimal list-inside text-sm">
+                <li>Boil water and cook pasta.</li>
+                <li>Chop basil and add to pasta.</li>
+                <li>Mix mustard with pasta.</li>
+                <li>Season with salt and pepper.</li>
+              </ol>
+            </div>
           </CardContent>
         </div>
       </div>
