@@ -15,19 +15,19 @@ export function FeaturedItem() {
         {/* Left side content */}
         <div className="flex-1">
           <CardHeader>
-            <CardTitle>Recipe</CardTitle>
+            <CardTitle>Featured: Pasta</CardTitle>
             <CardDescription>Recipe Description</CardDescription>
           </CardHeader>
           <Image
             src="https://www.foodandwine.com/thmb/fjNakOY7IcuvZac1hR3JcSo7vzI=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/FAW-recipes-pasta-sausage-basil-and-mustard-hero-06-cfd1c0a2989e474ea7e574a38182bbee.jpg"
-            width={450}
-            height={450}
+            width={500}
+            height={500}
             alt="Picture of recipe"
             className="rounded-xl m-1"
           />
         </div>
         {/* Vertical border */}
-        <div className="w-px bg-gray-200"></div>
+        <div className="w-px bg-gray-200 ml-2"></div>
         {/* Right side content with lists displayed side by side */}
         <div className="p-4 w-72">
           <CardContent className="flex flex-row space-x-4">
