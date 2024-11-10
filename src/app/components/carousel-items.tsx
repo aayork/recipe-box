@@ -1,3 +1,6 @@
+import * as React from "react";
+
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
@@ -9,15 +12,18 @@ import { FeaturedItem } from "./featured-item";
 
 export function CarouselItems() {
   return (
-    <Carousel>
-      <CarouselContent className="-ml-2 md:-ml-4">
-        <CarouselItem className="basis-1/2 pl-2 md:pl-4">
-          <FeaturedItem />
-        </CarouselItem>
-        <CarouselItem className="basis-1/2 pl-2 md:pl-4">
-          <FeaturedItem />
-        </CarouselItem>
+    <Carousel className="flex w-fit max-w-[710px]">
+      <CarouselContent>
+        {Array.from({ length: 5 }).map((_, index) => (
+          <CarouselItem key={index}>
+            <div className="p-1">
+              <FeaturedItem />
+            </div>
+          </CarouselItem>
+        ))}
       </CarouselContent>
+      <CarouselPrevious className="mx-2" />
+      <CarouselNext className="mx-2" />
     </Carousel>
   );
 }

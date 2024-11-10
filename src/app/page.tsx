@@ -1,5 +1,3 @@
-import Image from "next/image";
-import { Header } from "./components/header";
 import { Item } from "./components/item";
 import { CarouselItems } from "./components/carousel-items";
 
