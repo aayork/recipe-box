@@ -15,7 +15,7 @@ export function FeaturedItem() {
         {/* Left side content */}
         <div className="flex-1">
           <CardHeader>
-            <CardTitle>Recipe</CardTitle>
+            <CardTitle>Featured: Pasta</CardTitle>
             <CardDescription>Recipe Description</CardDescription>
           </CardHeader>
           <Image

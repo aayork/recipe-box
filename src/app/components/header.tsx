@@ -12,7 +12,7 @@ export function Header() {
         <Input className="w-56" type="search" placeholder="Search" />
         <Avatar className="w-8 h-8 ml-1">
           <AvatarImage src="https://github.com/shadcn.png" />
-          <AvatarFallback>CN</AvatarFallback>
+          <AvatarFallback>AY</AvatarFallback>
         </Avatar>
       </div>
     </div>
