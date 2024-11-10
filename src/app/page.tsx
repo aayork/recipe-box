@@ -1,11 +1,17 @@
 import Image from "next/image";
 import { Header } from "./components/header";
 import { Item } from "./components/item";
+import { CarouselItems } from "./components/carousel-items";
 
 export default function Home() {
   return (
-    <div className="items-center justify-items-center min-h-screen p-8 pb-20 gap-16 font-[family-name:var(--font-geist-sans)]">
-      <Item />
+    <div className="min-h-screen p-4 font-[family-name:var(--font-geist-sans)]">
+      <div>
+        <h2 className="font-bold text-xl mt-2">Featured</h2>
+        <CarouselItems />
+        <h2 className="font-bold text-xl mt-2">Trending</h2>
+        <Item />
+      </div>
     </div>
   );
 }

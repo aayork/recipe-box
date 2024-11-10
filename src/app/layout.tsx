@@ -3,6 +3,8 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "./components/app-sidebar";
+import { Input } from "@/components/ui/input";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -30,10 +32,17 @@ export default function RootLayout({
       <body>
         <SidebarProvider>
           <AppSidebar />
-          <main>
-            <div className="inline-flex">
+          <main className="w-full">
+            <div className="flex items-center justify-between p-1">
               <SidebarTrigger />
-              <h1 className="">Welcome to Recipe Box!</h1>
+              <h1 className="font-bold text-2xl">Welcome to Recipe Box!</h1>
+              <div className="flex items-center">
+                <Input className="w-56" type="search" placeholder="Search" />
+                <Avatar className="w-8 h-8 ml-1">
+                  <AvatarImage src="https://github.com/shadcn.png" />
+                  <AvatarFallback>CN</AvatarFallback>
+                </Avatar>
+              </div>
             </div>
             {children}
           </main>
