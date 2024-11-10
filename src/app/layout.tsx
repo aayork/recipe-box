@@ -5,6 +5,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "./components/app-sidebar";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Header } from "./components/header";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -33,16 +34,9 @@ export default function RootLayout({
         <SidebarProvider>
           <AppSidebar />
           <main className="w-full">
-            <div className="flex items-center justify-between p-1">
-              <SidebarTrigger />
-              <h1 className="font-bold text-2xl">Welcome to Recipe Box!</h1>
-              <div className="flex items-center">
-                <Input className="w-56" type="search" placeholder="Search" />
-                <Avatar className="w-8 h-8 ml-1">
-                  <AvatarImage src="https://github.com/shadcn.png" />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-              </div>
+            <div className="flex items-center">
+              <SidebarTrigger className="ml-1" />
+              <Header />
             </div>
             {children}
           </main>
