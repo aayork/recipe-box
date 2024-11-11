@@ -21,7 +21,7 @@ export function Header() {
         ) : (
           <button
             onClick={toggleSignIn}
-            className="ml-4 px-3 py-1 rounded bg-blue-500 text-white hover:bg-blue-600"
+            className="ml-2 px-3 py-[6px] rounded-md bg-blue-500 text-white hover:bg-blue-600"
           >
             Sign In
           </button>
