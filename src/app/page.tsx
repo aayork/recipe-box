@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { CarouselItems } from "./components/carousel-items";
 import { Item } from "./components/item";
-import { Header } from "./components/header";
+import { useUser } from "./components/user-context";
 
 const recipeData = [
   {
@@ -37,7 +37,6 @@ export default function Home() {
   };
   return (
     <div className="min-h-screen p-4 font-[family-name:var(--font-geist-sans)]">
-      <Header signedIn={signedIn} onSignInToggle={toggleSignIn} />
       <div className="flex justify-center relative right-20">
         <CarouselItems />
       </div>
