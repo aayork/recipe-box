@@ -36,7 +36,6 @@ export default function RootLayout({
           <main className="w-full">
             <div className="flex items-center">
               <SidebarTrigger className="ml-1" />
-              <Header />
             </div>
             {children}
           </main>

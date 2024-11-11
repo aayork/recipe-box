@@ -1,5 +1,9 @@
+"use client";
+
+import { useState } from "react";
 import { CarouselItems } from "./components/carousel-items";
-import { Item } from "./components/Item";
+import { Item } from "./components/item";
+import { Header } from "./components/header";
 
 const recipeData = [
   {
@@ -26,8 +30,14 @@ const recipeData = [
 ];
 
 export default function Home() {
+  const [signedIn, setSignedIn] = useState<boolean>(false);
+
+  const toggleSignIn = () => {
+    setSignedIn((prev) => !prev);
+  };
   return (
     <div className="min-h-screen p-4 font-[family-name:var(--font-geist-sans)]">
+      <Header signedIn={signedIn} onSignInToggle={toggleSignIn} />
       <div className="flex justify-center relative right-20">
         <CarouselItems />
       </div>
