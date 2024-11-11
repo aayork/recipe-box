@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
@@ -28,6 +29,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const [signedIn, setSignedIn] = useState(false);
+
+  const toggleSignIn = () => {
+    setSignedIn((prev) => !prev);
+  };
   return (
     <html lang="en">
       <body>
@@ -36,6 +42,7 @@ export default function RootLayout({
           <main className="w-full">
             <div className="flex items-center">
               <SidebarTrigger className="ml-1" />
+              <Header signedIn={signedIn} onSignInToggle={toggleSignIn} />
             </div>
             {children}
           </main>
