@@ -1,5 +1,5 @@
 import { CarouselItems } from "./components/carousel-items";
-import { Item } from "./components/Item";
+import { Item } from "./components/item";
 
 const recipeData = [
   {
