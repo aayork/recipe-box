@@ -8,8 +8,8 @@ export default function AddRecipePage() {
   const router = useRouter();
 
   const handleSave = (newRecipe: any) => {
-    // Logic to save the recipe, e.g., update the state or send it to a server
-    // After saving, navigate back to the home page
+    setRecipeList([...recipeList, newRecipe]);
+    setShowModal(false);
     router.push("/");
   };
 
