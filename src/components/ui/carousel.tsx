@@ -62,7 +62,7 @@ const Carousel = React.forwardRef<
       {
         ...opts,
         axis: orientation === "horizontal" ? "x" : "y",
-        loop: true,
+        loop: true, // Enable looping
       },
       plugins,
     );
@@ -112,6 +112,8 @@ const Carousel = React.forwardRef<
       onSelect(api);
       api.on("reInit", onSelect);
       api.on("select", onSelect);
+
+      // Set the total number of slides
       setSlidesCount(api.scrollSnapList().length);
 
       return () => {
@@ -260,7 +262,7 @@ const CarouselIndicators = () => {
   };
 
   return (
-    <div className="flex justify-center mt-2">
+    <div className="flex justify-center">
       {Array.from({ length: slidesCount }).map((_, index) => (
         <button
           key={index}
@@ -276,8 +278,6 @@ const CarouselIndicators = () => {
   );
 };
 
-CarouselIndicators.displayName = "CarouselIndicators";
-
 export {
   type CarouselApi,
   Carousel,
@@ -285,5 +285,5 @@ export {
   CarouselItem,
   CarouselPrevious,
   CarouselNext,
-  CarouselIndicators, // Exporting CarouselIndicators here
+  CarouselIndicators,
 };

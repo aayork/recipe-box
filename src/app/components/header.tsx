@@ -1,19 +1,29 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+"use client";
+
 import { Input } from "@/components/ui/input";
+import { useUser } from "./user-context";
+import { useRouter } from "next/navigation";
 
 export function Header() {
+  const { signedIn, toggleSignIn } = useUser();
+  const router = useRouter();
+
+  const handleSignOut = () => {
+    toggleSignIn();
+    router.push("/"); // Redirect to home route on logout
+  };
+
   return (
     <div className="flex items-center justify-between p-1 w-full">
-      <div className="flex-grow-0"></div>
-      <h1 className="font-bold text-2xl text-center flex-grow">
-        Welcome to Recipe Box!
-      </h1>
+      <h1 className="font-bold text-2xl">Welcome to Recipe Box!</h1>
       <div className="flex items-center ml-auto">
         <Input className="w-56" type="search" placeholder="Search" />
-        <Avatar className="w-8 h-8 ml-1">
-          <AvatarImage src="https://github.com/shadcn.png" />
-          <AvatarFallback>AY</AvatarFallback>
-        </Avatar>
+        <button
+          onClick={signedIn ? handleSignOut : toggleSignIn}
+          className="ml-2 px-3 py-[6px] rounded-md bg-blue-500 text-white hover:bg-blue-600"
+        >
+          {signedIn ? "Sign Out" : "Sign In"}
+        </button>
       </div>
     </div>
   );
