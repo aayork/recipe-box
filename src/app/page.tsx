@@ -25,7 +25,7 @@ export default function Home() {
         <h2 className="font-bold text-xl mt-2">Trending</h2>
         {signedIn && (
           <Link href="/add-recipe">
-            <button className="m-2 flex items-center gap-2 p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+            <button className="my-2 flex items-center gap-2 p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
               <Plus size={16} />
               Add New Recipe
             </button>
@@ -36,9 +36,9 @@ export default function Home() {
         {recipes.map((recipe) => (
           <Item
             key={recipe.id}
-            title={recipe.title}
-            description={recipe.description}
-            image={recipe.image}
+            title={recipe.name}
+            description={recipe.instructions}
+            image={recipe.imageUrl}
           />
         ))}
       </div>

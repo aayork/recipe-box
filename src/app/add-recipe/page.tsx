@@ -1,15 +1,15 @@
-// add-recipe/page.tsx
 "use client";
 
 import { useRouter } from "next/navigation";
 import AddRecipe from "../components/add-recipe";
 import { useRecipeContext } from "../components/recipe-context";
+import { Recipe } from "../components/recipe-context";
 
 export default function AddRecipePage() {
   const router = useRouter();
   const { addRecipe } = useRecipeContext();
 
-  const handleSave = (newRecipe: any) => {
+  const handleSave = (newRecipe: Recipe) => {
     addRecipe(newRecipe);
     router.push("/");
   };

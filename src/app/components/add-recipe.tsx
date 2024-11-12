@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Recipe } from "./recipe-context";
 
 interface AddRecipeProps {
   onSave: (newRecipe: any) => void;
@@ -29,7 +30,7 @@ const AddRecipe: React.FC<AddRecipeProps> = ({
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
-    const newRecipe = {
+    const newRecipe: Recipe = {
       id: Date.now().toString(),
       name,
       cookTime,
