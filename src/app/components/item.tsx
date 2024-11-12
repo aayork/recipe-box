@@ -17,7 +17,7 @@ interface ItemProps {
 
 export function Item({ title, description, image }: ItemProps) {
   return (
-    <Card>
+    <Card className="w-fit h-fit">
       <Image
         src={image}
         width={300}

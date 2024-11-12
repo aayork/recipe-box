@@ -1,11 +1,4 @@
-import {
-  Calendar,
-  Home,
-  Inbox,
-  Search,
-  Settings,
-  CircleUser,
-} from "lucide-react";
+import { Calendar, Home, Settings, CircleUser, CookingPot } from "lucide-react";
 
 import {
   Sidebar,
@@ -26,9 +19,9 @@ const items = [
     icon: Home,
   },
   {
-    title: "Inbox",
+    title: "My Recipes",
     url: "#",
-    icon: Inbox,
+    icon: CookingPot,
   },
   {
     title: "Calendar",

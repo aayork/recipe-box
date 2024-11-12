@@ -3,9 +3,9 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "./components/app-sidebar";
-import { Input } from "@/components/ui/input";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Header } from "./components/header";
+import { UserProvider } from "./components/user-context";
+import { RecipeProvider } from "./components/recipe-context";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -28,19 +28,25 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const signedIn = false;
+
   return (
     <html lang="en">
       <body>
-        <SidebarProvider>
-          <AppSidebar />
-          <main className="w-full">
-            <div className="flex items-center">
-              <SidebarTrigger className="ml-1" />
-              <Header />
-            </div>
-            {children}
-          </main>
-        </SidebarProvider>
+        <RecipeProvider>
+          <UserProvider>
+            <SidebarProvider>
+              <AppSidebar />
+              <main className="w-full">
+                <div className="flex items-center">
+                  <SidebarTrigger className="ml-1" />
+                  <Header />
+                </div>
+                {children}
+              </main>
+            </SidebarProvider>
+          </UserProvider>
+        </RecipeProvider>
       </body>
     </html>
   );
