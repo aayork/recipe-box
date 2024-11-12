@@ -58,9 +58,11 @@ export default function Home() {
 
   return (
     <div className="min-h-screen p-4 font-[family-name:var(--font-geist-sans)]">
-      <div className="flex justify-center relative right-20">
-        <CarouselItems />
-      </div>
+      {/*
+        <div className="flex justify-center relative right-20">
+          <CarouselItems />
+        </div>
+        */}
       <div className="flex justify-between items-center mt-4">
         <h2 className="font-bold text-xl mt-2">Trending</h2>
         {signedIn && (
