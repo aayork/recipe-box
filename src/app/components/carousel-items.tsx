@@ -7,23 +7,27 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  CarouselIndicators,
 } from "@/components/ui/carousel";
 import { FeaturedItem } from "./featured-item";
 
 export function CarouselItems() {
   return (
-    <Carousel className="flex w-fit max-w-[710px]">
-      <CarouselContent>
-        {Array.from({ length: 5 }).map((_, index) => (
-          <CarouselItem key={index}>
-            <div className="p-1">
-              <FeaturedItem />
-            </div>
-          </CarouselItem>
-        ))}
-      </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
-    </Carousel>
+    <div className="flex flex-col items-center w-full"> {/* Main centered container */}
+      <Carousel className="w-full max-w-[710px]">
+        <CarouselContent>
+          {Array.from({ length: 5 }).map((_, index) => (
+            <CarouselItem key={index}>
+              <div className="p-1">
+                <FeaturedItem />
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious />
+        <CarouselNext />
+        <CarouselIndicators /> {/* Indicators are now inside Carousel */}
+      </Carousel>
+    </div>
   );
 }

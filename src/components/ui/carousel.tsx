@@ -1,9 +1,7 @@
 "use client";
 
 import * as React from "react";
-import useEmblaCarousel, {
-  type UseEmblaCarouselType,
-} from "embla-carousel-react";
+import useEmblaCarousel, { type UseEmblaCarouselType } from "embla-carousel-react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -28,6 +26,8 @@ type CarouselContextProps = {
   scrollNext: () => void;
   canScrollPrev: boolean;
   canScrollNext: boolean;
+  selectedIndex: number;
+  slidesCount: number;
 } & CarouselProps;
 
 const CarouselContext = React.createContext<CarouselContextProps | null>(null);
@@ -62,19 +62,22 @@ const Carousel = React.forwardRef<
       {
         ...opts,
         axis: orientation === "horizontal" ? "x" : "y",
+        loop: true,
       },
       plugins,
     );
+
     const [canScrollPrev, setCanScrollPrev] = React.useState(false);
     const [canScrollNext, setCanScrollNext] = React.useState(false);
+    const [selectedIndex, setSelectedIndex] = React.useState(0);
+    const [slidesCount, setSlidesCount] = React.useState(0);
 
     const onSelect = React.useCallback((api: CarouselApi) => {
-      if (!api) {
-        return;
-      }
+      if (!api) return;
 
       setCanScrollPrev(api.canScrollPrev());
       setCanScrollNext(api.canScrollNext());
+      setSelectedIndex(api.selectedScrollSnap());
     }, []);
 
     const scrollPrev = React.useCallback(() => {
@@ -99,21 +102,17 @@ const Carousel = React.forwardRef<
     );
 
     React.useEffect(() => {
-      if (!api || !setApi) {
-        return;
-      }
-
+      if (!api || !setApi) return;
       setApi(api);
     }, [api, setApi]);
 
     React.useEffect(() => {
-      if (!api) {
-        return;
-      }
+      if (!api) return;
 
       onSelect(api);
       api.on("reInit", onSelect);
       api.on("select", onSelect);
+      setSlidesCount(api.scrollSnapList().length);
 
       return () => {
         api?.off("select", onSelect);
@@ -126,12 +125,13 @@ const Carousel = React.forwardRef<
           carouselRef,
           api: api,
           opts,
-          orientation:
-            orientation || (opts?.axis === "y" ? "vertical" : "horizontal"),
+          orientation: orientation || (opts?.axis === "y" ? "vertical" : "horizontal"),
           scrollPrev,
           scrollNext,
           canScrollPrev,
           canScrollNext,
+          selectedIndex,
+          slidesCount,
         }}
       >
         <div
@@ -206,7 +206,7 @@ const CarouselPrevious = React.forwardRef<
       variant={variant}
       size={size}
       className={cn(
-        "absolute  h-10 w-6 rounded",
+        "absolute h-10 w-6 rounded",
         orientation === "horizontal"
           ? "-left-10 top-1/2 -translate-y-1/2"
           : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
@@ -252,6 +252,32 @@ const CarouselNext = React.forwardRef<
 });
 CarouselNext.displayName = "CarouselNext";
 
+const CarouselIndicators = () => {
+  const { selectedIndex, slidesCount, api } = useCarousel();
+
+  const handleIndicatorClick = (index: number) => {
+    api?.scrollTo(index);
+  };
+
+  return (
+    <div className="flex justify-center mt-2">
+      {Array.from({ length: slidesCount }).map((_, index) => (
+        <button
+          key={index}
+          onClick={() => handleIndicatorClick(index)}
+          className={cn(
+            "w-3 h-3 rounded-full mx-1 transition-colors duration-300",
+            index === selectedIndex ? "bg-black" : "bg-gray-300"
+          )}
+          aria-label={`Go to slide ${index + 1}`}
+        />
+      ))}
+    </div>
+  );
+};
+
+CarouselIndicators.displayName = "CarouselIndicators";
+
 export {
   type CarouselApi,
   Carousel,
@@ -259,4 +285,5 @@ export {
   CarouselItem,
   CarouselPrevious,
   CarouselNext,
+  CarouselIndicators, // Exporting CarouselIndicators here
 };
