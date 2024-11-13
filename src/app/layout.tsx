@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "./components/app-sidebar";
-import { Header } from "./components/header";
-import { UserProvider } from "./components/user-context";
-import { RecipeProvider } from "./components/recipe-context";
+import { AppSidebar } from "@/components/app-sidebar";
+import { Header } from "@/components/header";
+import { UserProvider } from "@/components/user-context";
+import { RecipeProvider } from "@/components/recipe-context";
+import { ThemeProvider } from "@/components/ui/theme-provider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -33,20 +34,27 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <RecipeProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
           <UserProvider>
-            <SidebarProvider>
-              <AppSidebar />
-              <main className="w-full">
-                <div className="flex items-center">
-                  <SidebarTrigger className="ml-1" />
-                  <Header />
-                </div>
-                {children}
-              </main>
-            </SidebarProvider>
+            <RecipeProvider>
+              <SidebarProvider>
+                <AppSidebar />
+                <main className="w-full">
+                  <div className="flex items-center">
+                    <SidebarTrigger className="ml-1" />
+                    <Header />
+                  </div>
+                  {children}
+                </main>
+              </SidebarProvider>
+            </RecipeProvider>
           </UserProvider>
-        </RecipeProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

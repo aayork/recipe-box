@@ -13,7 +13,7 @@ import { FeaturedItem } from "./featured-item";
 
 export function CarouselItems() {
   return (
-    <div className="flex flex-col items-center w-full"> {/* Main centered container */}
+    <div className="flex flex-col items-center w-full">
       <Carousel className="w-full max-w-[710px]">
         <CarouselContent>
           {Array.from({ length: 5 }).map((_, index) => (
@@ -26,7 +26,7 @@ export function CarouselItems() {
         </CarouselContent>
         <CarouselPrevious />
         <CarouselNext />
-        <CarouselIndicators /> {/* Indicators are now inside Carousel */}
+        <CarouselIndicators />
       </Carousel>
     </div>
   );

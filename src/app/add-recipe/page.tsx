@@ -1,9 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import AddRecipe from "../components/add-recipe";
-import { useRecipeContext } from "../components/recipe-context";
-import { Recipe } from "../components/recipe-context";
+import AddRecipe from "@/components/add-recipe";
+import { useRecipeContext, Recipe } from "@/components/recipe-context";
 
 export default function AddRecipePage() {
   const router = useRouter();

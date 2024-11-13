@@ -17,13 +17,13 @@ interface ItemProps {
 
 export function Item({ title, description, image }: ItemProps) {
   return (
-    <Card className="w-fit h-fit">
+    <Card className="w-fit h-fit p-1">
       <Image
         src={image}
         width={300}
         height={300}
         alt={`Picture of ${title}`}
-        className="rounded-xl m-1"
+        className="rounded-xl"
       />
       <CardHeader>
         <CardTitle>{title}</CardTitle>
