@@ -14,8 +14,7 @@ interface User {
 interface UserContextType {
   user: User | null; // Null if no user is signed in
   signedIn: boolean;
-  signIn: (userData: User) => void; // Function to sign in the user
-  signOut: () => void; // Function to sign out the user
+  toggleSignIn: (userData?: User) => void;
 }
 
 // Create the context
@@ -26,20 +25,21 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [signedIn, setSignedIn] = useState(false);
   const [user, setUser] = useState<User | null>(null);
 
-  // Function to sign in the user
-  const signIn = (userData: User) => {
-    setUser(userData);
-    setSignedIn(true);
-  };
-
-  // Function to sign out the user
-  const signOut = () => {
-    setUser(null);
-    setSignedIn(false);
+  // Consolidated toggleSignIn function
+  const toggleSignIn = (userData?: User) => {
+    if (signedIn) {
+      // Sign out if currently signed in
+      setUser(null);
+      setSignedIn(false);
+    } else if (userData) {
+      // Sign in if not signed in and userData is provided
+      setUser(userData);
+      setSignedIn(true);
+    }
   };
 
   return (
-    <UserContext.Provider value={{ user, signedIn, signIn, signOut }}>
+    <UserContext.Provider value={{ user, signedIn, toggleSignIn }}>
       {children}
     </UserContext.Provider>
   );

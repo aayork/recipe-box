@@ -9,8 +9,18 @@ export function Header() {
   const { signedIn, toggleSignIn } = useUser();
   const router = useRouter();
 
+  const handleSignIn = () => {
+    // Example user data for sign-in
+    const mockUser = {
+      name: "John Doe",
+      email: "john.doe@example.com",
+      createdAt: new Date().toISOString(),
+    };
+    toggleSignIn(mockUser); // Sign in with mock user data
+  };
+
   const handleSignOut = () => {
-    toggleSignIn();
+    toggleSignIn(); // Sign out
     router.push("/"); // Redirect to home route on logout
   };
 
@@ -23,15 +33,14 @@ export function Header() {
       {/* Right-Aligned Controls */}
       <div className="flex items-center">
         <ModeToggle />
-        <Input className="w-56 ml-4" type="search" placeholder="Search" />
+        <Input className="w-56 ml-2" type="search" placeholder="Search" />
         <button
-          onClick={signedIn ? handleSignOut : toggleSignIn}
-          className="ml-4 px-4 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600 border border-input"
+          onClick={signedIn ? handleSignOut : handleSignIn} // Use specific handlers
+          className="ml-2 px-4 py-[6px] rounded-md bg-blue-500 text-white hover:bg-blue-600 border border-input"
         >
           {signedIn ? "Sign Out" : "Sign In"}
         </button>
       </div>
     </div>
   );
-  
 }

@@ -20,13 +20,18 @@ const items = [
   },
   {
     title: "My Recipes",
-    url: "/my-recipes-sidebar",
+    url: "/my-recipes",
     icon: CookingPot,
   },
   {
     title: "Profile",
-    url: "/profile-sidebar",
+    url: "/profile",
     icon: CircleUser,
+  },
+  {
+    title: "Settings",
+    url: "#",
+    icon: Settings,
   },
 ];
 
