@@ -18,7 +18,7 @@ export function CarouselItems() {
         <CarouselContent>
           {Array.from({ length: 5 }).map((_, index) => (
             <CarouselItem key={index}>
-              <div className="p-1">
+              <div className="flex flex-row">
                 <FeaturedItem />
               </div>
             </CarouselItem>

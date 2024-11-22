@@ -20,17 +20,12 @@ const items = [
   },
   {
     title: "My Recipes",
-    url: "#",
+    url: "/my-recipes",
     icon: CookingPot,
   },
   {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
-  },
-  {
     title: "Profile",
-    url: "#",
+    url: "/profile",
     icon: CircleUser,
   },
   {
