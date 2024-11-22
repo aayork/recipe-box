@@ -27,18 +27,15 @@ export default function Home() {
       </div>
       {/* Break Between Trending and Cards */}
       <div className="my-6"></div>
-      {/* Centered Cards */}
-      <div className="flex justify-center">
-        <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full">
-          {recipes.map((recipe) => (
-            <Item
-              key={recipe.id}
-              title={recipe.name}
-              description={recipe.instructions}
-              image={recipe.imageUrl}
-            />
-          ))}
-        </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+        {recipes.map((recipe) => (
+          <Item
+            key={recipe.id}
+            title={recipe.name}
+            description={recipe.instructions}
+            image={recipe.imageUrl}
+          />
+        ))}
       </div>
     </div>
   );
