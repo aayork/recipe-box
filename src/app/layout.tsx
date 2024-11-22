@@ -29,26 +29,32 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const signedIn = false;
-
   return (
     <html lang="en">
       <body>
+        {/* ThemeProvider for handling light/dark themes */}
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
+          {/* UserProvider wraps the entire app to manage user state */}
           <UserProvider>
+            {/* RecipeProvider wraps app to manage recipes */}
             <RecipeProvider>
+              {/* SidebarProvider for sidebar state management */}
               <SidebarProvider>
+                {/* Sidebar navigation */}
                 <AppSidebar />
                 <main className="w-full">
                   <div className="flex items-center">
+                    {/* Sidebar trigger button */}
                     <SidebarTrigger className="ml-1" />
+                    {/* Header of the app */}
                     <Header />
                   </div>
+                  {/* Main content of the app */}
                   {children}
                 </main>
               </SidebarProvider>

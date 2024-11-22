@@ -14,26 +14,34 @@ export default function Home() {
   return (
     <div className="min-h-screen p-4 font-[family-name:var(--font-geist-sans)]">
       <CarouselItems />
-      <div className="flex justify-start items-center mt-4">
-        <h2 className="font-bold text-xl mt-2">Trending</h2>
-        {signedIn && (
-          <Link href="/add-recipe">
-            <button className="m-2 flex items-center gap-2 p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 border border-input">
-              <Plus size={16} />
-              Add New Recipe
-            </button>
-          </Link>
-        )}
+      {/* Centered Trending Section */}
+      <div className="flex flex-col items-center mt-4">
+        <div className="flex items-center">
+          <h2 className="font-bold text-xl mt-2">Trending</h2>
+          {signedIn && (
+            <Link href="/add-recipe">
+              <button className="ml-2 flex items-center gap-2 p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 border border-input">
+                <Plus size={16} />
+                Add New Recipe
+              </button>
+            </Link>
+          )}
+        </div>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-        {recipes.map((recipe) => (
-          <Item
-            key={recipe.id}
-            title={recipe.name}
-            description={recipe.instructions}
-            image={recipe.imageUrl}
-          />
-        ))}
+      {/* Break Between Trending and Cards */}
+      <div className="my-6"></div>
+      {/* Centered Cards */}
+      <div className="flex justify-center">
+        <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full">
+          {recipes.map((recipe) => (
+            <Item
+              key={recipe.id}
+              title={recipe.name}
+              description={recipe.instructions}
+              image={recipe.imageUrl}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
