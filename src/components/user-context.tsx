@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, { createContext, useContext, useState,useEffect, ReactNode } from "react";
 
 // Define the shape of the user object
 interface User {
@@ -24,6 +24,22 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [signedIn, setSignedIn] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+// Load user state from localStorage on initial load
+
+useEffect(() => {
+  const savedUser = localStorage.getItem("user");
+  const savedSignedIn = localStorage.getItem("signedIn");
+
+  if (savedUser) setUser(JSON.parse(savedUser));
+  if (savedSignedIn) setSignedIn(JSON.parse(savedSignedIn));
+}, []);
+
+// Update localStorage whenever the state changes
+useEffect(() => {
+  localStorage.setItem("user", JSON.stringify(user));
+  localStorage.setItem("signedIn", JSON.stringify(signedIn));
+}, [user, signedIn]);
+
 
   // Consolidated toggleSignIn function
   const toggleSignIn = (userData?: User) => {
@@ -31,9 +47,16 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       // Sign out if currently signed in
       setUser(null);
       setSignedIn(false);
+      localStorage.removeItem("user");
+      localStorage.removeItem("signedIn");
     } else if (userData) {
       // Sign in if not signed in and userData is provided
-      setUser(userData);
+      setUser({
+        name: userData.name || "User", // Default to "User" if name is not provided
+        email: userData.email || "",
+        username: userData.username || "User", // Default to "User" if username is not provided
+        createdAt: userData.createdAt || new Date().toISOString(), // Provide a default date
+      });
       setSignedIn(true);
     }
   };
