@@ -1,14 +1,23 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 
 export interface Recipe {
   id: string;
-  name: string;
-  instructions: string;
-  imageUrl: string;
+  title: string;
+  image: string;
+  updated_date: string;
   cookTime: string;
-  ingredients: string;
+  ingredients: string[];
+  instructions: string;
+  type: string;
+  user: string;
 }
 
 interface RecipeContextProps {
@@ -19,37 +28,34 @@ interface RecipeContextProps {
 const RecipeContext = createContext<RecipeContextProps | undefined>(undefined);
 
 export const RecipeProvider = ({ children }: { children: ReactNode }) => {
-  const [recipes, setRecipes] = useState<Recipe[]>([
-    {
-      id: "1",
-      name: "Churros",
-      instructions: "Yummy yummy in my tummy!",
-      imageUrl:
-        "https://www.allrecipes.com/thmb/qq9s8jlKplKUDEo3Gtk15EAJpHc=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/ALR-recipe-24700-churros-VAT-hero-03-4x3-a7f6af1860934b0385f84ab9f13f2613.jpg",
-      cookTime: "30 minutes",
-      ingredients: "Flour, water, sugar, oil",
-    },
-    {
-      id: "2",
-      name: "Pasta",
-      instructions: "Delicious homemade pasta",
-      imageUrl:
-        "https://www.foodandwine.com/thmb/fjNakOY7IcuvZac1hR3JcSo7vzI=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/FAW-recipes-pasta-sausage-basil-and-mustard-hero-06-cfd1c0a2989e474ea7e574a38182bbee.jpg",
-      cookTime: "30 minutes",
-      ingredients: "Flour, water, sugar, oil",
-    },
-    {
-      id: "3",
-      name: "Salad",
-      instructions: "A healthy green salad",
-      imageUrl:
-        "https://garlicsaltandlime.com/wp-content/uploads/2022/07/Garden-salad-thumbnail.jpg",
-      cookTime: "30 minutes",
-      ingredients: "Flour, water, sugar, oil",
-    },
-  ]);
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
 
   const addRecipe = (recipe: Recipe) => setRecipes((prev) => [...prev, recipe]);
+
+  // Fetch the 15 most recent recipes on mount
+  useEffect(() => {
+    const fetchRecipes = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/items/");
+        if (!response.ok) {
+          throw new Error("Failed to fetch recipes");
+        }
+        const data = await response.json();
+        const sortedRecipes = data.items
+          .sort(
+            (a: Recipe, b: Recipe) =>
+              new Date(b.updated_date).getTime() -
+              new Date(a.updated_date).getTime(),
+          )
+          .slice(0, 15); // Get the 15 most recent
+        setRecipes(sortedRecipes);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchRecipes();
+  }, []);
 
   return (
     <RecipeContext.Provider value={{ recipes, addRecipe }}>

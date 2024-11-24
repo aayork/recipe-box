@@ -1,10 +1,14 @@
 import React, { useState } from "react";
-import { Recipe } from "./recipe-context";
+import { useUser } from "./user-context";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
+import { Textarea } from "./ui/textarea";
+import { Plus, Trash2 } from "lucide-react";
 
 interface AddRecipeProps {
   onSave: (newRecipe: any) => void;
   onClose: () => void;
-  isPage?: boolean; // New prop to distinguish between modal and page usage
+  isPage?: boolean; // Distinguish between modal and page usage
 }
 
 const AddRecipe: React.FC<AddRecipeProps> = ({
@@ -14,54 +18,85 @@ const AddRecipe: React.FC<AddRecipeProps> = ({
 }) => {
   const [name, setName] = useState("");
   const [cookTime, setCookTime] = useState("");
-  const [ingredients, setIngredients] = useState("");
+  const [ingredients, setIngredients] = useState<string[]>([""]); // Store ingredients as an array
   const [instructions, setInstructions] = useState("");
+  const [type, setType] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [isFormTouched, setIsFormTouched] = useState(false);
+  const { user, signedIn } = useUser(); // Access signedIn status
 
   const clearForm = () => {
     setName("");
     setCookTime("");
-    setIngredients("");
+    setIngredients([""]); // Reset ingredients to an array with one empty string
     setInstructions("");
+    setType("");
     setImageUrl("");
     setIsFormTouched(false);
   };
 
-  const handleSave = (e: React.FormEvent) => {
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    const newRecipe: Recipe = {
-      id: Date.now().toString(),
-      name,
+
+    if (!signedIn) {
+      alert("You must be signed in to add a recipe.");
+      return;
+    }
+
+    if (!name || !cookTime || !ingredients.length || !instructions || !type) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+
+    const requestBody = {
+      title: name,
+      image: imageUrl,
       cookTime,
       ingredients,
       instructions,
-      imageUrl,
+      type,
+      user: user?._id,
     };
-    onSave(newRecipe);
-    clearForm();
-    onClose();
-  };
 
-  const handleClose = () => {
-    if (isFormTouched) {
-      const confirmClose = window.confirm(
-        "You have unsaved changes. Are you sure you want to close?",
-      );
-      if (confirmClose) {
-        onClose();
+    console.log("Request Body:", JSON.stringify(requestBody, null, 2));
+
+    try {
+      const response = await fetch("/api/items", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to save the recipe.");
       }
-    } else {
+
+      const newRecipe = await response.json();
+      onSave(newRecipe);
+      clearForm();
       onClose();
+    } catch (error) {
+      console.error(error);
+      alert("An error occurred while saving the recipe.");
     }
   };
 
   const handleChange =
-    (setter: React.Dispatch<React.SetStateAction<string>>) =>
-    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      setter(e.target.value);
+    (index: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      const newIngredients = [...ingredients];
+      newIngredients[index] = e.target.value;
+      setIngredients(newIngredients);
       setIsFormTouched(true);
     };
+
+  const handleAddIngredient = () => {
+    setIngredients([...ingredients, ""]); // Add a new empty ingredient field
+  };
+
+  const handleRemoveIngredient = (index: number) => {
+    const newIngredients = ingredients.filter((_, i) => i !== index);
+    setIngredients(newIngredients); // Remove ingredient at index
+  };
 
   return (
     <div
@@ -81,7 +116,7 @@ const AddRecipe: React.FC<AddRecipeProps> = ({
         {!isPage && (
           <button
             className="absolute top-4 right-4 text-gray-500 hover:text-black text-lg"
-            onClick={handleClose}
+            onClick={onClose}
           >
             X
           </button>
@@ -90,60 +125,100 @@ const AddRecipe: React.FC<AddRecipeProps> = ({
         <form onSubmit={handleSave} className="space-y-4">
           <div className="flex flex-col">
             <label className="font-semibold mb-1">Recipe Name</label>
-            <input
+            <Input
               placeholder="Recipe Name"
               value={name}
-              onChange={handleChange(setName)}
-              className="border border-gray-300 p-2 rounded w-full"
+              onChange={(e) => {
+                setName(e.target.value);
+                setIsFormTouched(true);
+              }}
             />
           </div>
 
           <div className="flex flex-col">
             <label className="font-semibold mb-1">Cook Time</label>
-            <input
+            <Input
               placeholder="Cook Time"
               value={cookTime}
-              onChange={handleChange(setCookTime)}
-              className="border border-gray-300 p-2 rounded w-full"
+              onChange={(e) => {
+                setCookTime(e.target.value);
+                setIsFormTouched(true);
+              }}
             />
           </div>
 
           <div className="flex flex-col">
             <label className="font-semibold mb-1">Ingredients</label>
-            <textarea
-              placeholder="List ingredients"
-              value={ingredients}
-              onChange={handleChange(setIngredients)}
-              className="border border-gray-300 p-2 rounded w-full h-24"
-            />
+            {ingredients.map((ingredient, index) => (
+              <div key={index} className="flex space-x-2">
+                <Input
+                  type="text"
+                  value={ingredient}
+                  onChange={handleChange(index)}
+                  placeholder="Ingredient"
+                  className="my-1"
+                />
+                <Button
+                  type="button"
+                  onClick={() => handleRemoveIngredient(index)}
+                  className="ml-2 my-1 bg-red-500 hover:bg-red-600"
+                >
+                  <Trash2 />
+                </Button>
+              </div>
+            ))}
+            <Button
+              type="button"
+              onClick={handleAddIngredient}
+              className="mt-2 bg-blue-500 hover:bg-blue-600"
+            >
+              <Plus /> Add Ingredient
+            </Button>
           </div>
 
           <div className="flex flex-col">
             <label className="font-semibold mb-1">Instructions</label>
-            <textarea
+            <Textarea
               placeholder="Enter cooking instructions"
               value={instructions}
-              onChange={handleChange(setInstructions)}
-              className="border border-gray-300 p-2 rounded w-full h-32"
+              onChange={(e) => {
+                setInstructions(e.target.value);
+                setIsFormTouched(true);
+              }}
+              className="w-full h-32"
+            />
+          </div>
+
+          <div className="flex flex-col">
+            <label className="font-semibold mb-1">Cuisine Type</label>
+            <Input
+              placeholder="e.g., Italian, Greek"
+              value={type}
+              onChange={(e) => {
+                setType(e.target.value);
+                setIsFormTouched(true);
+              }}
             />
           </div>
 
           <div className="flex flex-col">
             <label className="font-semibold mb-1">Image URL</label>
-            <input
-              placeholder="Image URL"
+            <Input
+              placeholder="https://picsum.photos/200"
               value={imageUrl}
-              onChange={handleChange(setImageUrl)}
-              className="border border-gray-300 p-2 rounded w-full"
+              onChange={(e) => {
+                setImageUrl(e.target.value);
+                setIsFormTouched(true);
+              }}
             />
           </div>
 
-          <button
+          <Button
             type="submit"
-            className="mt-4 p-2 bg-green-500 text-white rounded-lg hover:bg-green-600 w-full"
+            className="mt-4 bg-green-500 hover:bg-green-600 w-full"
           >
             Save
-          </button>
+          </Button>
         </form>
       </div>
     </div>

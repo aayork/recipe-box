@@ -20,12 +20,11 @@ export async function POST(req: NextRequest) {
       password: hashedPassword,
     });
 
-    // Include user data in the response (excluding sensitive fields like password)
     return NextResponse.json(
       {
         message: 'User created successfully.',
         user: {
-          id: newUser._id.toString(),
+          _id: newUser._id,
           username: newUser.username,
           email: newUser.email,
           createdAt: newUser.createdAt,

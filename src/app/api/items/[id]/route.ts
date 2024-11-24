@@ -21,6 +21,12 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     title: title,
     description: description,
     image: image,
+    updated_date: updated_date,
+    cookTime: cookTime,
+    ingredients: ingredients,
+    instructions: instructions,
+    type: type,
+    user: user,
   } = await request.json();
   await connectMongoDB();
   await Item.findByIdAndUpdate(id, { title, description, image });

@@ -18,13 +18,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: 'Invalid email or password.' }, { status: 401 });
     }
 
-    // Include username in the response
+    
     return NextResponse.json({
       message: 'Login successful.',
       user: {
-        id: user._id.toString(),
+        _id: user._id,
         email: user.email,
-        username: user.username, // Add username here
+        username: user.username, 
       },
     }, { status: 200 });
   } catch (error) {
