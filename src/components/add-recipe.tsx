@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useUser } from "./user-context";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
@@ -7,14 +8,13 @@ import { Plus, Trash2 } from "lucide-react";
 interface AddRecipeProps {
   onSave: (newRecipe: any) => void;
   onClose: () => void;
-  userId: string; // Ensure userId is being passed correctly
+  userId: string;
   isPage?: boolean; // Distinguish between modal and page usage
 }
 
 const AddRecipe: React.FC<AddRecipeProps> = ({
   onSave,
   onClose,
-  userId,
   isPage = false,
 }) => {
   const [name, setName] = useState("");
@@ -24,6 +24,7 @@ const AddRecipe: React.FC<AddRecipeProps> = ({
   const [type, setType] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [isFormTouched, setIsFormTouched] = useState(false);
+  const { user } = useUser();
 
   const clearForm = () => {
     setName("");
@@ -50,7 +51,7 @@ const AddRecipe: React.FC<AddRecipeProps> = ({
       instructions,
       type,
       image: imageUrl,
-      user: userId, // Ensure the userId is passed correctly
+      user: user?.id, // Ensure the userId is passed correctly
     };
 
     console.log("Request Body:", JSON.stringify(requestBody, null, 2));
