@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useUser } from "./user-context";
 import { useRouter } from "next/navigation";
-import { ModeToggle } from "./mode-toggle";
 import AuthToggle from "./auth-toggle";
 import { Input } from "@/components/ui/input";
 import { Button } from "./ui/button";
@@ -28,7 +27,6 @@ export function Header() {
         </h1>
 
         <div className="flex items-center">
-          {/*<ModeToggle />*/}
           <Input className="w-56 ml-2" type="search" placeholder="Search" />
           <Button
             onClick={signedIn ? handleSignOut : () => setShowAuthModal(true)}

@@ -14,15 +14,17 @@ export default function Home() {
   return (
     <div className="min-h-screen p-4 font-[family-name:var(--font-geist-sans)]">
       <div className="inline-flex">
-        <p className="p-2">
-          <h2 className="font-bold text-xl mb-2">About Us</h2>
-          Welcome to Recipe Box, your go-to website for quick, affordable, and
-          easy recipes tailored for college students! Whether you’re juggling
-          classes, late-night study sessions, or tight budgets, Recipe Box
-          offers simple, delicious meal ideas using common ingredients. From
-          satisfying snacks to hearty meals, we make cooking stress-free and fun
-          for students of all skill levels.
-        </p>
+        <div className="flex flex-col">
+          <h2 className="font-bold text-xl p-2">About Us</h2>
+          <p className="p-2">
+            Welcome to Recipe Box, your go-to website for quick, affordable, and
+            easy recipes tailored for college students! Whether you’re juggling
+            classes, late-night study sessions, or tight budgets, Recipe Box
+            offers simple, delicious meal ideas using common ingredients. From
+            satisfying snacks to hearty meals, we make cooking stress-free and
+            fun for students of all skill levels.
+          </p>
+        </div>
         <CarouselItems />
       </div>
       <div className="flex justify-start items-center mt-4">
