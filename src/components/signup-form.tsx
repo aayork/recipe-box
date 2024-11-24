@@ -36,6 +36,7 @@ export default function SignupForm({ closeModal }: { closeModal: () => void }) {
       }
 
       toggleSignIn({
+        _id: data.user._id,
         name: data.user.name,
         email: data.user.email,
         username: data.user.username,

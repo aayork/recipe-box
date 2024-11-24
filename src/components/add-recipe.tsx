@@ -51,7 +51,6 @@ const AddRecipe: React.FC<AddRecipeProps> = ({
       instructions,
       type,
       image: imageUrl,
-      user: user?.id, // Ensure the userId is passed correctly
     };
 
     console.log("Request Body:", JSON.stringify(requestBody, null, 2));

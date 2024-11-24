@@ -1,9 +1,10 @@
 "use client";
 
-import React, { createContext, useContext, useState,useEffect, ReactNode } from "react";
+import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
 // Define the shape of the user object
 interface User {
+  _id: string;
   name: string;
   email: string;
   username?: string;
@@ -52,6 +53,7 @@ useEffect(() => {
     } else if (userData) {
       // Sign in if not signed in and userData is provided
       setUser({
+        _id: userData._id,
         name: userData.name || "User", // Default to "User" if name is not provided
         email: userData.email || "",
         username: userData.username || "User", // Default to "User" if username is not provided
