@@ -46,11 +46,12 @@ const AddRecipe: React.FC<AddRecipeProps> = ({
 
     const requestBody = {
       title: name,
+      image: imageUrl,
       cookTime,
-      ingredients, // Send the ingredients array as-is
+      ingredients,
       instructions,
       type,
-      image: imageUrl,
+      user: user?._id,
     };
 
     console.log("Request Body:", JSON.stringify(requestBody, null, 2));
