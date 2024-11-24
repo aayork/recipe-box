@@ -59,14 +59,14 @@ export default function SignupForm({ closeModal }: { closeModal: () => void }) {
         onChange={(e) => setFormData({ ...formData, username: e.target.value })}
         required
       />
-      <input
+      <Input
         type="email"
         placeholder="Email"
         value={formData.email}
         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
         required
       />
-      <input
+      <Input
         type="password"
         placeholder="Password"
         value={formData.password}
