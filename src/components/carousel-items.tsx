@@ -24,8 +24,6 @@ export function CarouselItems() {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
         <CarouselIndicators />
       </Carousel>
     </div>
