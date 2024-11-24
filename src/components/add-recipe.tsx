@@ -8,7 +8,6 @@ import { Plus, Trash2 } from "lucide-react";
 interface AddRecipeProps {
   onSave: (newRecipe: any) => void;
   onClose: () => void;
-  userId: string;
   isPage?: boolean; // Distinguish between modal and page usage
 }
 
@@ -24,7 +23,7 @@ const AddRecipe: React.FC<AddRecipeProps> = ({
   const [type, setType] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [isFormTouched, setIsFormTouched] = useState(false);
-  const { user } = useUser();
+  const { user, signedIn } = useUser(); // Access signedIn status
 
   const clearForm = () => {
     setName("");
@@ -38,6 +37,11 @@ const AddRecipe: React.FC<AddRecipeProps> = ({
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!signedIn) {
+      alert("You must be signed in to add a recipe.");
+      return;
+    }
 
     if (!name || !cookTime || !ingredients.length || !instructions || !type) {
       alert("Please fill in all required fields.");
