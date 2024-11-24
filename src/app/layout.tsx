@@ -7,15 +7,25 @@ import { Header } from "@/components/header";
 import { UserProvider } from "@/components/user-context";
 import { RecipeProvider } from "@/components/recipe-context";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
+const baskervvilleSC = localFont({
+  src: "./fonts/BaskervvilleSC-Regular.ttf",
+  variable: "--font-baskervville-sc",
+  weight: "400",
+  style: "normal",
 });
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+
+const wittgensteinVF = localFont({
+  src: "./fonts/Wittgenstein-VariableFont_wght.ttf",
+  variable: "--font-wittgenstein-vf",
+  weight: "400",
+  style: "normal",
+});
+
+const wittgensteinItalicVF = localFont({
+  src: "./fonts/Wittgenstein-Italic-VariableFont_wght.ttf",
+  variable: "--font-wittgenstein-italic-vf",
+  weight: "400",
+  style: "normal",
 });
 
 export const metadata: Metadata = {
@@ -30,23 +40,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
-        {/* UserProvider wraps the entire app to manage user state */}
+      <body className={wittgensteinVF.variable}>
         <UserProvider>
-          {/* RecipeProvider wraps app to manage recipes */}
           <RecipeProvider>
-            {/* SidebarProvider for sidebar state management */}
             <SidebarProvider>
-              {/* Sidebar navigation */}
               <AppSidebar />
               <main className="w-full">
                 <div className="flex items-center">
-                  {/* Sidebar trigger button */}
                   <SidebarTrigger className="ml-1" />
-                  {/* Header of the app */}
                   <Header />
                 </div>
-                {/* Main content of the app */}
                 {children}
               </main>
             </SidebarProvider>
