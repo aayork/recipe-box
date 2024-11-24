@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useUser } from '@/components/user-context';
 
-export default function LoginForm() {
+export default function LoginForm({ closeModal }: { closeModal: () => void }) {
   const { toggleSignIn } = useUser();
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [message, setMessage] = useState('');
@@ -29,22 +29,30 @@ export default function LoginForm() {
         throw new Error(data.message || 'Something went wrong');
       }
 
-      toggleSignIn(); // Update signed-in state
-      setMessage('Login successful!');
+      toggleSignIn({
+        name: data.user.name,
+        email: data.user.email,
+        username: data.user.username,
+        createdAt: data.user.createdAt,
+      });
+      
+      setMessage('');
       setFormData({ email: '', password: '' });
+      closeModal(); // Close modal after successful login
     } catch (error: any) {
       setMessage(error.message);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="space-y-4">
       <input
         type="email"
         placeholder="Email"
         value={formData.email}
         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
         required
+        className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-300"
       />
       <input
         type="password"
@@ -52,9 +60,15 @@ export default function LoginForm() {
         value={formData.password}
         onChange={(e) => setFormData({ ...formData, password: e.target.value })}
         required
+        className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-300"
       />
-      <button type="submit">Sign In</button>
-      {message && <p>{message}</p>}
+      <button
+        type="submit"
+        className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+      >
+        Log In
+      </button>
+      {message && <p className="text-center text-sm text-red-500 mt-2">{message}</p>}
     </form>
   );
 }

@@ -18,10 +18,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: 'Invalid email or password.' }, { status: 401 });
     }
 
-    // Generate a token or session here if you're not using `next-auth`
-    // For `next-auth`, use `signIn` in the LoginForm component to handle this.
-
-    return NextResponse.json({ message: 'Login successful.', user: { id: user._id, email: user.email } }, { status: 200 });
+    // Include username in the response
+    return NextResponse.json({
+      message: 'Login successful.',
+      user: {
+        id: user._id.toString(),
+        email: user.email,
+        username: user.username, // Add username here
+      },
+    }, { status: 200 });
   } catch (error) {
     console.error('Error during login:', error);
     return NextResponse.json({ message: 'Internal server error.' }, { status: 500 });
