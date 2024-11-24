@@ -8,8 +8,8 @@ interface Item extends Document {
   cookTime: string;
   ingredients: string[];
   instructions: string;
-  type: string; // e.g., Italian, Greek
-  user: Schema.Types.ObjectId; // Reference to the user who created the recipe
+  type: string;
+  user: Schema.Types.ObjectId;
 }
 
 const itemSchema = new Schema<Item>({
