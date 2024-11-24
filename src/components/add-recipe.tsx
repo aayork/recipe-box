@@ -1,21 +1,23 @@
 import React, { useState } from "react";
-import { Recipe } from "./recipe-context";
 
 interface AddRecipeProps {
   onSave: (newRecipe: any) => void;
   onClose: () => void;
-  isPage?: boolean; // New prop to distinguish between modal and page usage
+  userId: string; // Pass the logged-in user's ID
+  isPage?: boolean; // Distinguish between modal and page usage
 }
 
 const AddRecipe: React.FC<AddRecipeProps> = ({
   onSave,
   onClose,
+  userId,
   isPage = false,
 }) => {
   const [name, setName] = useState("");
   const [cookTime, setCookTime] = useState("");
   const [ingredients, setIngredients] = useState("");
   const [instructions, setInstructions] = useState("");
+  const [type, setType] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [isFormTouched, setIsFormTouched] = useState(false);
 
@@ -24,35 +26,45 @@ const AddRecipe: React.FC<AddRecipeProps> = ({
     setCookTime("");
     setIngredients("");
     setInstructions("");
+    setType("");
     setImageUrl("");
     setIsFormTouched(false);
   };
 
-  const handleSave = (e: React.FormEvent) => {
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    const newRecipe: Recipe = {
-      id: Date.now().toString(),
-      name,
-      cookTime,
-      ingredients,
-      instructions,
-      imageUrl,
-    };
-    onSave(newRecipe);
-    clearForm();
-    onClose();
-  };
 
-  const handleClose = () => {
-    if (isFormTouched) {
-      const confirmClose = window.confirm(
-        "You have unsaved changes. Are you sure you want to close?",
-      );
-      if (confirmClose) {
-        onClose();
+    if (!name || !cookTime || !ingredients || !instructions || !type) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/recipes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: name,
+          cookTime,
+          ingredients: ingredients.split("\n"), // Convert to array
+          instructions,
+          type,
+          image: imageUrl,
+          user: userId,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to save the recipe.");
       }
-    } else {
+
+      const newRecipe = await response.json();
+      onSave(newRecipe);
+      clearForm();
       onClose();
+    } catch (error) {
+      console.error(error);
+      alert("An error occurred while saving the recipe.");
     }
   };
 
@@ -81,7 +93,7 @@ const AddRecipe: React.FC<AddRecipeProps> = ({
         {!isPage && (
           <button
             className="absolute top-4 right-4 text-gray-500 hover:text-black text-lg"
-            onClick={handleClose}
+            onClick={onClose}
           >
             X
           </button>
@@ -109,7 +121,9 @@ const AddRecipe: React.FC<AddRecipeProps> = ({
           </div>
 
           <div className="flex flex-col">
-            <label className="font-semibold mb-1">Ingredients</label>
+            <label className="font-semibold mb-1">
+              Ingredients (one per line)
+            </label>
             <textarea
               placeholder="List ingredients"
               value={ingredients}
@@ -125,6 +139,16 @@ const AddRecipe: React.FC<AddRecipeProps> = ({
               value={instructions}
               onChange={handleChange(setInstructions)}
               className="border border-gray-300 p-2 rounded w-full h-32"
+            />
+          </div>
+
+          <div className="flex flex-col">
+            <label className="font-semibold mb-1">Cuisine Type</label>
+            <input
+              placeholder="e.g., Italian, Greek"
+              value={type}
+              onChange={handleChange(setType)}
+              className="border border-gray-300 p-2 rounded w-full"
             />
           </div>
 
