@@ -56,7 +56,7 @@ const AddRecipe: React.FC<AddRecipeProps> = ({
     console.log("Request Body:", JSON.stringify(requestBody, null, 2));
 
     try {
-      const response = await fetch("/api/recipes", {
+      const response = await fetch("/api/items", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(requestBody),
