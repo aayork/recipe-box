@@ -33,7 +33,7 @@ export default function ProfilePage() {
         <h1 className="text-4xl font-bold mb-6">Profile</h1>
         {signedIn && user ? (
           <>
-            <h2 className="text-2xl font-semibold mb-4">Welcome, {user.name}!</h2>
+            <h2 className="text-2xl font-semibold mb-4">Welcome, {user?.username}!</h2>
             <p className="text-lg mb-2">
               <strong>Email:</strong> {user.email}
             </p>
