@@ -271,14 +271,14 @@ const CarouselIndicators = () => {
   };
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center m-2">
       {Array.from({ length: slidesCount }).map((_, index) => (
         <button
           key={index}
           onClick={() => handleIndicatorClick(index)}
           className={cn(
             "w-3 h-3 rounded-full mx-1 transition-colors duration-300",
-            index === selectedIndex ? "bg-black" : "bg-gray-300"
+            index === selectedIndex ? "bg-black" : "bg-gray-300",
           )}
           aria-label={`Go to slide ${index + 1}`}
         />

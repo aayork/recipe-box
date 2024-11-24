@@ -1,32 +1,38 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useUser } from '@/components/user-context';
+import { useState } from "react";
+import { useUser } from "@/components/user-context";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
 
-export default function LoginForm({ closeModal }: { closeModal: () => void }) {
+export default function SignupForm({ closeModal }: { closeModal: () => void }) {
   const { toggleSignIn } = useUser();
-  const [formData, setFormData] = useState({ username: '', email: '', password: '' });
-  const [message, setMessage] = useState('');
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
+  const [message, setMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!formData.username || !formData.email || !formData.password) {
-      setMessage('Username, email, and password are required.');
+      setMessage("Username, email, and password are required.");
       return;
     }
 
     try {
-      const response = await fetch('/api/auth/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || 'Something went wrong');
+        throw new Error(data.message || "Something went wrong");
       }
 
       toggleSignIn({
@@ -35,9 +41,9 @@ export default function LoginForm({ closeModal }: { closeModal: () => void }) {
         username: data.user.username,
         createdAt: data.user.createdAt,
       });
-      
-      setMessage('');
-      setFormData({ username: '', email: '', password: '' });
+
+      setMessage("");
+      setFormData({ username: "", email: "", password: "" });
       closeModal(); // Close modal after successful login
     } catch (error: any) {
       setMessage(error.message);
@@ -45,14 +51,13 @@ export default function LoginForm({ closeModal }: { closeModal: () => void }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <input
+    <form onSubmit={handleSubmit} className="space-y-1">
+      <Input
         type="text"
         placeholder="Username"
         value={formData.username}
         onChange={(e) => setFormData({ ...formData, username: e.target.value })}
         required
-        className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-300"
       />
       <input
         type="email"
@@ -60,7 +65,6 @@ export default function LoginForm({ closeModal }: { closeModal: () => void }) {
         value={formData.email}
         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
         required
-        className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-300"
       />
       <input
         type="password"
@@ -68,15 +72,14 @@ export default function LoginForm({ closeModal }: { closeModal: () => void }) {
         value={formData.password}
         onChange={(e) => setFormData({ ...formData, password: e.target.value })}
         required
-        className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-300"
       />
-      <button
+      <Button
         type="submit"
         className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
       >
         Sign Up
-      </button>
-      {message && <p className="text-center text-sm text-red-500 mt-2">{message}</p>}
+      </Button>
+      {message && <p className="w-full">{message}</p>}
     </form>
   );
 }
