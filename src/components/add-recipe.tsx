@@ -4,6 +4,7 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 import { Plus, Trash2 } from "lucide-react";
+import { describe } from "node:test";
 
 interface AddRecipeProps {
   onSave: (newRecipe: any) => void;
@@ -20,6 +21,7 @@ const AddRecipe: React.FC<AddRecipeProps> = ({
   const [cookTime, setCookTime] = useState("");
   const [ingredients, setIngredients] = useState<string[]>([""]); // Store ingredients as an array
   const [instructions, setInstructions] = useState("");
+  const [description, setDescription] = useState("");
   const [type, setType] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [isFormTouched, setIsFormTouched] = useState(false);
@@ -32,6 +34,7 @@ const AddRecipe: React.FC<AddRecipeProps> = ({
     setInstructions("");
     setType("");
     setImageUrl("");
+    setDescription("");
     setIsFormTouched(false);
   };
 
@@ -50,6 +53,7 @@ const AddRecipe: React.FC<AddRecipeProps> = ({
 
     const requestBody = {
       title: name,
+      description,
       image: imageUrl,
       cookTime,
       ingredients,
@@ -179,10 +183,23 @@ const AddRecipe: React.FC<AddRecipeProps> = ({
           <div className="flex flex-col">
             <label className="font-semibold mb-1">Instructions</label>
             <Textarea
-              placeholder="Enter cooking instructions"
+              placeholder="Enter cooking instructions/steps"
               value={instructions}
               onChange={(e) => {
                 setInstructions(e.target.value);
+                setIsFormTouched(true);
+              }}
+              className="w-full h-32"
+            />
+          </div>
+
+          <div className="flex flex-col">
+            <label className="font-semibold mb-1">Description</label>
+            <Textarea
+              placeholder="Recipe description (optional)"
+              value={description}
+              onChange={(e) => {
+                setDescription(e.target.value);
                 setIsFormTouched(true);
               }}
               className="w-full h-32"

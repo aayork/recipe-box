@@ -7,6 +7,8 @@ import {
 } from "@/components/ui/card";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { Heart } from "lucide-react";
+import { useState } from "react";
 
 interface ItemProps {
   key: string;
@@ -16,6 +18,12 @@ interface ItemProps {
 }
 
 export function Item({ title, description, image }: ItemProps) {
+  const [liked, setLiked] = useState(false);
+
+  const toggleLike = () => {
+    setLiked((prev) => !prev);
+  };
+
   return (
     <Card className="w-fit h-fit p-1">
       <Image
@@ -30,7 +38,12 @@ export function Item({ title, description, image }: ItemProps) {
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent>
-        <Button variant="outline">Info</Button>
+        <div className="flex justify-between items-center">
+          <Button variant="outline">Info</Button>
+          <Button variant="outline" onClick={toggleLike}>
+            <Heart className={liked ? "text-red-500" : "text-gray-500"} />
+          </Button>
+        </div>
       </CardContent>
     </Card>
   );

@@ -30,7 +30,6 @@ export function Header() {
               alt="Recipe Box Icon"
               width={50}
               height={50}
-              className="w-12 h-12"
             />
           ) : (
             <Link href="/" passHref>
@@ -39,7 +38,7 @@ export function Header() {
                 alt="Recipe Box Icon"
                 width={50}
                 height={50}
-                className="cursor-pointer w-12 h-12"
+                className="cursor-pointer"
               />
             </Link>
           )}
