@@ -23,7 +23,7 @@ export function Header() {
   return (
     <>
       <div className="flex items-center justify-between p-1 w-full">
-      <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4">
           {pathname === "/" ? (
             <img
               src="/favicon.ico"
@@ -35,7 +35,7 @@ export function Header() {
           ) : (
             <Link href="/" passHref>
               <img
-                src="/favicon.ico"
+                src="/logo.png"
                 alt="Recipe Box Icon"
                 width={50}
                 height={50}
