@@ -7,7 +7,7 @@ import { Item } from "@/components/item";
 import { Plus } from "lucide-react";
 
 export interface Recipe {
-  id: string;
+  _id: string;
   title: string;
   image: string;
   updated_date: string;
@@ -68,7 +68,7 @@ const Home = () => {
         {recipes.length > 0 ? (
           recipes.map((recipe) => (
             <Item
-              key={recipe.id}
+              key={recipe._id}
               title={recipe.title}
               description={recipe.instructions}
               image={recipe.image}
