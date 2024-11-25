@@ -6,10 +6,13 @@ import { useRouter } from "next/navigation";
 import AuthToggle from "./auth-toggle";
 import { Input } from "@/components/ui/input";
 import { Button } from "./ui/button";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export function Header() {
   const { user, signedIn, toggleSignIn } = useUser();
   const router = useRouter();
+  const pathname = usePathname();
   const [showAuthModal, setShowAuthModal] = useState(false);
 
   const handleSignOut = () => {
@@ -20,12 +23,32 @@ export function Header() {
   return (
     <>
       <div className="flex items-center justify-between p-1 w-full">
-        <h1 className="font-bold text-2xl text-center flex-grow">
-          {signedIn
-            ? `Welcome to Recipe Box, ${user?.username || "User"}!`
-            : "Welcome to Recipe Box!"}
-        </h1>
-
+        <div className="flex items-center gap-4">
+          {pathname === "/" ? (
+            <img
+              src="/src/images/logo.png"
+              alt="Recipe Box Icon"
+              width={50}
+              height={50}
+              className="w-12 h-12"
+            />
+          ) : (
+            <Link href="/" passHref>
+              <img
+                src="/src/images/logo.png"
+                alt="Recipe Box Icon"
+                width={50}
+                height={50}
+                className="cursor-pointer w-12 h-12"
+              />
+            </Link>
+          )}
+          <h1 className="font-bold text-2xl">
+            {signedIn
+              ? `Welcome to Recipe Box, ${user?.username || "User"}!`
+              : "Welcome to Recipe Box!"}
+          </h1>
+        </div>
         <div className="flex items-center">
           <Input className="w-56 ml-2" type="search" placeholder="Search" />
           <Button
