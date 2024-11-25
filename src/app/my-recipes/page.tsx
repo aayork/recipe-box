@@ -16,9 +16,9 @@ export default function MyRecipesPage() {
             {recipes.map((recipe) => (
               <Item
                 key={recipe.id}
-                title={recipe.name}
+                title={recipe.title}
                 description={recipe.instructions}
-                image={recipe.imageUrl}
+                image={recipe.image}
               />
             ))}
           </div>
