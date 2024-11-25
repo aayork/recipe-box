@@ -14,6 +14,7 @@ export interface Recipe {
   cookTime: string;
   ingredients: string[];
   instructions: string;
+  description: string;
   type: string;
   user: string;
 }
@@ -70,7 +71,7 @@ const Home = () => {
             <Item
               key={recipe._id}
               title={recipe.title}
-              description={recipe.instructions}
+              description={recipe.description}
               image={recipe.image}
             />
           ))

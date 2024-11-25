@@ -19,7 +19,12 @@ export default function ProfilePage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.name && formData.email && formData.username && formData.password) {
+    if (
+      formData.name &&
+      formData.email &&
+      formData.username &&
+      formData.password
+    ) {
       signIn({
         ...formData,
         createdAt: new Date().toISOString(),
@@ -33,7 +38,9 @@ export default function ProfilePage() {
         <h1 className="text-4xl font-bold mb-6">Profile</h1>
         {signedIn && user ? (
           <>
-            <h2 className="text-2xl font-semibold mb-4">Welcome, {user?.username}!</h2>
+            <h2 className="text-2xl font-semibold mb-4">
+              Welcome, {user?.username}!
+            </h2>
             <p className="text-lg mb-2">
               <strong>Email:</strong> {user.email}
             </p>
