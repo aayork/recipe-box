@@ -6,19 +6,23 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Image from "next/image";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Heart } from "lucide-react";
+import { Heart, PencilLine } from "lucide-react";
 import { useState } from "react";
+import { useUser } from "./user-context";
 
 interface ItemProps {
   key: string;
   title: string;
   description: string;
   image: string;
+  user: string;
 }
 
-export function Item({ title, description, image }: ItemProps) {
+export function Item({ key, title, description, image, user }: ItemProps) {
   const [liked, setLiked] = useState(false);
+  const { user: currUser } = useUser(); // Destructure the user from useUser context
 
   const toggleLike = () => {
     setLiked((prev) => !prev);
@@ -40,9 +44,18 @@ export function Item({ title, description, image }: ItemProps) {
       <CardContent>
         <div className="flex justify-between items-center">
           <Button variant="outline">Info</Button>
-          <Button variant="outline" onClick={toggleLike}>
-            <Heart className={liked ? "text-red-500" : "text-gray-500"} />
-          </Button>
+          <div className="space-x-1">
+            {currUser?._id === user && (
+              <Link href={`/edit-recipe/${key}`} passHref>
+                <Button variant="outline">
+                  <PencilLine />
+                </Button>
+              </Link>
+            )}
+            <Button variant="outline" onClick={toggleLike}>
+              <Heart className={liked ? "text-red-500" : "text-gray-500"} />
+            </Button>
+          </div>
         </div>
       </CardContent>
     </Card>

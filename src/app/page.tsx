@@ -72,6 +72,7 @@ const Home = () => {
             title={recipe.title}
             description={recipe.description}
             image={recipe.image}
+            user={recipe.user}
           />
         ))}
       </div>
