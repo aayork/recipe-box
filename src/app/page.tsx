@@ -2,13 +2,12 @@
 
 import { useUser } from "@/components/user-context";
 import { useState, useEffect } from "react";
-import { CarouselItems } from "@/components/carousel-items";
 import Link from "next/link";
 import { Item } from "@/components/item";
 import { Plus } from "lucide-react";
 
 export interface Recipe {
-  id: string;
+  _id: string;
   title: string;
   image: string;
   updated_date: string;
@@ -25,13 +24,14 @@ const Home = () => {
   const [error, setError] = useState<string | null>(null);
   const { signedIn } = useUser();
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
+        setLoading(true);
         const response = await fetch("http://localhost:3000/api/items/");
-        if (!response.ok) {
-          throw new Error("Failed to fetch recipes");
-        }
+        if (!response.ok) throw new Error("Failed to fetch recipes");
         const data = await response.json();
         const sortedRecipes = data.items
           .sort(
@@ -44,15 +44,13 @@ const Home = () => {
       } catch (err) {
         console.error(err);
         setError("Failed to load recipes. Please try again later.");
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchRecipes();
   }, []);
-
-  if (error) {
-    return <div>{error}</div>;
-  }
 
   return (
     <div>
@@ -70,7 +68,7 @@ const Home = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 m-2">
         {recipes.map((recipe) => (
           <Item
-            key={recipe.id}
+            key={recipe._id}
             title={recipe.title}
             description={recipe.description}
             image={recipe.image}

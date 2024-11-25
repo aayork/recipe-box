@@ -10,13 +10,13 @@ export default function AddRecipePage() {
     router.push("/");
   };
 
+  const handleClose = () => {
+    router.push("/");
+  };
+
   return (
     <div className="min-h-screen p-4">
-      <AddRecipe
-        onSave={handleSave}
-        onClose={() => router.push("/")}
-        isPage={true}
-      />
+      <AddRecipe onSave={handleSave} onClose={handleClose} isPage={true} />
     </div>
   );
 }
