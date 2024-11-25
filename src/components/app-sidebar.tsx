@@ -1,5 +1,4 @@
 import { Home, CircleUser, CookingPot } from "lucide-react";
-import { useUser } from "./user-context";
 
 import {
   Sidebar,
