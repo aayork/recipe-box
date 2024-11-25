@@ -37,8 +37,11 @@ const Home = () => {
         }
         const data = await response.json();
 
-        // Set recipes filtered by the current user
-        setRecipes(data.items);
+        // Ensure recipes are filtered for the current user
+        const userRecipes = data.items.filter(
+          (recipe: Recipe) => recipe.user === user._id,
+        );
+        setRecipes(userRecipes);
       } catch (err) {
         console.error(err);
         setError("Failed to load recipes. Please try again later.");
