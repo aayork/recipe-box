@@ -5,7 +5,6 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { Header } from "@/components/header";
 import { UserProvider } from "@/components/user-context";
-import { RecipeProvider } from "@/components/recipe-context";
 
 const baskervvilleSC = localFont({
   src: "./fonts/BaskervvilleSC-Regular.ttf",
@@ -42,18 +41,16 @@ export default function RootLayout({
     <html lang="en">
       <body className={wittgensteinVF.variable}>
         <UserProvider>
-          <RecipeProvider>
-            <SidebarProvider>
-              <AppSidebar />
-              <main className="w-full">
-                <div className="flex items-center">
-                  <SidebarTrigger className="ml-1" />
-                  <Header />
-                </div>
-                {children}
-              </main>
-            </SidebarProvider>
-          </RecipeProvider>
+          <SidebarProvider>
+            <AppSidebar />
+            <main className="w-full">
+              <div className="flex items-center">
+                <SidebarTrigger className="ml-1" />
+                <Header />
+              </div>
+              {children}
+            </main>
+          </SidebarProvider>
         </UserProvider>
       </body>
     </html>
