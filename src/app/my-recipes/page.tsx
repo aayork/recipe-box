@@ -73,6 +73,8 @@ const Home = () => {
           recipes.map((recipe) => (
             <Item
               key={recipe._id}
+              id={recipe._id}
+              user={recipe.user}
               title={recipe.title}
               description={recipe.description}
               image={recipe.image}

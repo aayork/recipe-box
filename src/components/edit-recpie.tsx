@@ -1,36 +1,35 @@
 import React, { useState } from "react";
-import { useUser } from "./user-context";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 import { Plus, Trash2 } from "lucide-react";
-import { describe } from "node:test";
 
 interface EditRecipeProps {
   onSave: (newRecipe: any) => void;
   onClose: () => void;
   isPage?: boolean; // Distinguish between modal and page usage
+  recipeId: string;
 }
 
 const EditRecipe: React.FC<EditRecipeProps> = ({
   onSave,
   onClose,
   isPage = false,
+  recipeId,
 }) => {
   const [name, setName] = useState("");
   const [cookTime, setCookTime] = useState("");
-  const [ingredients, setIngredients] = useState<string[]>([""]); // Store ingredients as an array
+  const [ingredients, setIngredients] = useState<string[]>([""]);
   const [instructions, setInstructions] = useState("");
   const [description, setDescription] = useState("");
   const [type, setType] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [isFormTouched, setIsFormTouched] = useState(false);
-  const { user, signedIn } = useUser(); // Access signedIn status
 
   const clearForm = () => {
     setName("");
     setCookTime("");
-    setIngredients([""]); // Reset ingredients to an array with one empty string
+    setIngredients([""]);
     setInstructions("");
     setType("");
     setImageUrl("");
@@ -38,20 +37,15 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
     setIsFormTouched(false);
   };
 
-  const handleSave = async (e: React.FormEvent) => {
+  const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!signedIn) {
-      alert("You must be signed in to add a recipe.");
-      return;
-    }
 
     if (!name || !cookTime || !ingredients.length || !instructions || !type) {
       alert("Please fill in all required fields.");
       return;
     }
 
-    const requestBody = {
+    const newRecipe = {
       title: name,
       description,
       image: imageUrl,
@@ -59,30 +53,11 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
       ingredients,
       instructions,
       type,
-      user: user?._id,
     };
 
-    console.log("Request Body:", JSON.stringify(requestBody, null, 2));
-
-    try {
-      const response = await fetch("/api/items", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(requestBody),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to save the recipe.");
-      }
-
-      const newRecipe = await response.json();
-      onSave(newRecipe);
-      clearForm();
-      onClose();
-    } catch (error) {
-      console.error(error);
-      alert("An error occurred while saving the recipe.");
-    }
+    onSave(newRecipe);
+    clearForm();
+    onClose();
   };
 
   const handleChange =
@@ -94,12 +69,12 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
     };
 
   const handleAddIngredient = () => {
-    setIngredients([...ingredients, ""]); // Add a new empty ingredient field
+    setIngredients([...ingredients, ""]);
   };
 
   const handleRemoveIngredient = (index: number) => {
     const newIngredients = ingredients.filter((_, i) => i !== index);
-    setIngredients(newIngredients); // Remove ingredient at index
+    setIngredients(newIngredients);
   };
 
   return (
@@ -125,7 +100,7 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
             X
           </button>
         )}
-        <h2 className="text-2xl font-bold mb-4">Add a New Recipe</h2>
+        <h2 className="text-2xl font-bold mb-4">Edit Recipe</h2>
         <form onSubmit={handleSave} className="space-y-4">
           <div className="flex flex-col">
             <label className="font-semibold mb-1">Recipe Name</label>
