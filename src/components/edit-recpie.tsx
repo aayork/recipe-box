@@ -37,16 +37,16 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
         if (!response.ok) {
           throw new Error("Failed to fetch the recipe data.");
         }
-        const recipe = await response.json();
+        const { item } = await response.json(); // Destructure 'item' from response
+        console.log("Fetched Recipe Item:", item);
 
-        // Populate the form fields with fetched data
-        setName(recipe.title || "");
-        setCookTime(recipe.cookTime || "");
-        setIngredients(recipe.ingredients || [""]);
-        setInstructions(recipe.instructions || "");
-        setDescription(recipe.description || "");
-        setType(recipe.type || "");
-        setImageUrl(recipe.image || "");
+        setName(item.title || "");
+        setCookTime(item.cookTime || "");
+        setIngredients(item.ingredients || [""]);
+        setInstructions(item.instructions || "");
+        setDescription(item.description || "");
+        setType(item.type || "");
+        setImageUrl(item.image || "");
       } catch (error) {
         console.error(error);
         alert("An error occurred while loading the recipe.");
@@ -88,8 +88,6 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
       user: user?._id,
     };
 
-    console.log("Request Body:", JSON.stringify(requestBody, null, 2));
-
     try {
       const response = await fetch(`/api/items/${recipeId}`, {
         method: "PUT",
@@ -126,6 +124,29 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
   const handleRemoveIngredient = (index: number) => {
     const newIngredients = ingredients.filter((_, i) => i !== index);
     setIngredients(newIngredients);
+  };
+
+  const handleDelete = async () => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this recipe? This action cannot be undone.",
+    );
+    if (!confirmDelete) return;
+
+    try {
+      const response = await fetch(`/api/items/${recipeId}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete the recipe.");
+      }
+
+      alert("Recipe deleted successfully.");
+      onClose(); // Close the modal/page after deletion
+    } catch (error) {
+      console.error(error);
+      alert("An error occurred while deleting the recipe.");
+    }
   };
 
   if (loading) {
@@ -215,19 +236,6 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
           </div>
 
           <div className="flex flex-col">
-            <label className="font-semibold mb-1">Instructions</label>
-            <Textarea
-              placeholder="Enter cooking instructions/steps"
-              value={instructions}
-              onChange={(e) => {
-                setInstructions(e.target.value);
-                setIsFormTouched(true);
-              }}
-              className="w-full h-32"
-            />
-          </div>
-
-          <div className="flex flex-col">
             <label className="font-semibold mb-1">Description</label>
             <Textarea
               placeholder="Recipe description (optional)"
@@ -263,13 +271,21 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
               }}
             />
           </div>
-
-          <Button
-            type="submit"
-            className="mt-4 bg-green-500 hover:bg-green-600 w-full"
-          >
-            Save
-          </Button>
+          <div className="flex space-x-1">
+            <Button
+              type="submit"
+              className="mt-1 bg-green-500 hover:bg-green-600 w-full"
+            >
+              Save Recipe
+            </Button>
+            <Button
+              type="button"
+              onClick={handleDelete}
+              className="mt-1 bg-red-500 hover:bg-red-600 w-full"
+            >
+              Delete Recipe
+            </Button>
+          </div>
         </form>
       </div>
     </div>
