@@ -74,10 +74,14 @@ const Home = () => {
             <Item
               key={recipe._id}
               id={recipe._id}
-              user={recipe.user}
               title={recipe.title}
               description={recipe.description}
               image={recipe.image}
+              user={recipe.user}
+              ingredients={recipe.ingredients}
+              instructions={recipe.instructions}
+              cookTime={recipe.cookTime}
+              type={recipe.type}
             />
           ))
         ) : (
