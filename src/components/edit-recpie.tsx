@@ -72,6 +72,11 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!signedIn) {
+      alert("You must be signed in to edit a recipe.");
+      return;
+    }
+
     if (!name || !cookTime || !ingredients.length || !instructions || !type) {
       alert("Please fill in all required fields.");
       return;
@@ -87,6 +92,8 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
       type,
       user: user?._id,
     };
+
+    console.log("Request Body:", JSON.stringify(requestBody, null, 2));
 
     try {
       const response = await fetch(`/api/items/${recipeId}`, {
