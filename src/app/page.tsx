@@ -74,6 +74,10 @@ const Home = () => {
             description={recipe.description}
             image={recipe.image}
             user={recipe.user}
+            ingredients={recipe.ingredients}
+            instructions={recipe.instructions}
+            cookTime={recipe.cookTime}
+            type={recipe.type}
           />
         ))}
       </div>
