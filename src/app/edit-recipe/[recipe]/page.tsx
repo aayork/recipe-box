@@ -7,6 +7,18 @@ export default function EditRecipePage() {
   const router = useRouter();
   const { recipe } = useParams(); // Access the dynamic route parameter
 
+  // Ensure recipe is a string
+  const recipeId = Array.isArray(recipe) ? recipe[0] : recipe; // Use the first item if it's an array
+
+  if (!recipeId) {
+    // Handle the case where recipeId is undefined
+    return (
+      <div className="min-h-screen p-4">
+        <p>Error: Recipe not found.</p>
+      </div>
+    );
+  }
+
   const handleSave = (updatedRecipe: any) => {
     // Handle save logic, e.g., making an API call to update the recipe
     console.log("Recipe updated:", updatedRecipe);
@@ -20,7 +32,7 @@ export default function EditRecipePage() {
   return (
     <div className="min-h-screen p-4">
       <EditRecipe
-        recipeId={recipe}
+        recipeId={recipeId} // Pass the validated string
         onSave={handleSave}
         onClose={handleClose}
         isPage={true}

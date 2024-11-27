@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useUser } from "./user-context";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
@@ -25,6 +26,37 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
   const [type, setType] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [isFormTouched, setIsFormTouched] = useState(false);
+  const [loading, setLoading] = useState(true); // To track loading state
+  const { user, signedIn } = useUser();
+
+  // Fetch the existing recipe data
+  useEffect(() => {
+    const fetchRecipe = async () => {
+      try {
+        const response = await fetch(`/api/items/${recipeId}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch the recipe data.");
+        }
+        const recipe = await response.json();
+
+        // Populate the form fields with fetched data
+        setName(recipe.title || "");
+        setCookTime(recipe.cookTime || "");
+        setIngredients(recipe.ingredients || [""]);
+        setInstructions(recipe.instructions || "");
+        setDescription(recipe.description || "");
+        setType(recipe.type || "");
+        setImageUrl(recipe.image || "");
+      } catch (error) {
+        console.error(error);
+        alert("An error occurred while loading the recipe.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRecipe();
+  }, [recipeId]);
 
   const clearForm = () => {
     setName("");
@@ -37,7 +69,7 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
     setIsFormTouched(false);
   };
 
-  const handleSave = (e: React.FormEvent) => {
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!name || !cookTime || !ingredients.length || !instructions || !type) {
@@ -45,7 +77,7 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
       return;
     }
 
-    const newRecipe = {
+    const requestBody = {
       title: name,
       description,
       image: imageUrl,
@@ -53,11 +85,30 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
       ingredients,
       instructions,
       type,
+      user: user?._id,
     };
 
-    onSave(newRecipe);
-    clearForm();
-    onClose();
+    console.log("Request Body:", JSON.stringify(requestBody, null, 2));
+
+    try {
+      const response = await fetch(`/api/items/${recipeId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to save the recipe.");
+      }
+
+      const newRecipe = await response.json();
+      onSave(newRecipe);
+      clearForm();
+      onClose();
+    } catch (error) {
+      console.error(error);
+      alert("An error occurred while saving the recipe.");
+    }
   };
 
   const handleChange =
@@ -76,6 +127,14 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
     const newIngredients = ingredients.filter((_, i) => i !== index);
     setIngredients(newIngredients);
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p>Loading recipe...</p>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -100,7 +159,7 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
             X
           </button>
         )}
-        <h2 className="text-2xl font-bold mb-4">Edit Recipe</h2>
+        <h2 className="text-2xl font-bold mb-4">Add a New Recipe</h2>
         <form onSubmit={handleSave} className="space-y-4">
           <div className="flex flex-col">
             <label className="font-semibold mb-1">Recipe Name</label>
