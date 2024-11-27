@@ -16,6 +16,7 @@ interface UserContextType {
   user: User | null; // Null if no user is signed in
   signedIn: boolean;
   toggleSignIn: (userData?: User) => void;
+  updateUserDetails: (details: Partial<User>) => void; // Function to update user details
 }
 
 // Create the context
@@ -25,22 +26,21 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [signedIn, setSignedIn] = useState(false);
   const [user, setUser] = useState<User | null>(null);
-// Load user state from localStorage on initial load
 
-useEffect(() => {
-  const savedUser = localStorage.getItem("user");
-  const savedSignedIn = localStorage.getItem("signedIn");
+  // Load user state from localStorage on initial load
+  useEffect(() => {
+    const savedUser = localStorage.getItem("user");
+    const savedSignedIn = localStorage.getItem("signedIn");
 
-  if (savedUser) setUser(JSON.parse(savedUser));
-  if (savedSignedIn) setSignedIn(JSON.parse(savedSignedIn));
-}, []);
+    if (savedUser) setUser(JSON.parse(savedUser));
+    if (savedSignedIn) setSignedIn(JSON.parse(savedSignedIn));
+  }, []);
 
-// Update localStorage whenever the state changes
-useEffect(() => {
-  localStorage.setItem("user", JSON.stringify(user));
-  localStorage.setItem("signedIn", JSON.stringify(signedIn));
-}, [user, signedIn]);
-
+  // Update localStorage whenever the state changes
+  useEffect(() => {
+    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("signedIn", JSON.stringify(signedIn));
+  }, [user, signedIn]);
 
   // Consolidated toggleSignIn function
   const toggleSignIn = (userData?: User) => {
@@ -63,8 +63,17 @@ useEffect(() => {
     }
   };
 
+  // Function to update user details
+  const updateUserDetails = (details: Partial<User>) => {
+    if (user) {
+      const updatedUser = { ...user, ...details };
+      setUser(updatedUser);
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+    }
+  };
+
   return (
-    <UserContext.Provider value={{ user, signedIn, toggleSignIn }}>
+    <UserContext.Provider value={{ user, signedIn, toggleSignIn, updateUserDetails }}>
       {children}
     </UserContext.Provider>
   );
