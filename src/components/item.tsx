@@ -31,18 +31,14 @@ export function Item({ id, title, description, image, user }: ItemProps) {
 
   return (
     <Card className="w-fit h-fit p-1">
-      <div className="relative w-50 h-50">
-        <Image
-          src={image}
-          alt={title}
-          width={200}
-          height={200}
-          className="rounded-xl w-full h-full object-cover"
-        />
+      <div className="relative w-[200px] h-[180px] overflow-hidden rounded-xl">
+        <Image src={image} alt={title} fill className="object-cover" />
       </div>
       <CardHeader>
-        <CardTitle>{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
+        <CardTitle className="mt-1">{title}</CardTitle>
+        <CardDescription className="max-w-[190px]">
+          {description}
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="flex justify-between items-center">

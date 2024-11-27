@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Card,
   CardContent,
@@ -8,11 +10,10 @@ import {
 } from "@/components/ui/card";
 import Image from "next/image";
 
-export function FeaturedItem() {
+export function RecipeDetails() {
   return (
     <Card>
       <div className="flex flex-row">
-        {/* Left side content */}
         <div className="flex-1">
           <CardHeader>
             <CardTitle className="px-1 pt-1">Featured: Pasta</CardTitle>
@@ -28,9 +29,7 @@ export function FeaturedItem() {
             className="rounded-xl m-1"
           />
         </div>
-        {/* Vertical border */}
         <div className="w-px bg-border ml-2"></div>
-        {/* Right side content with lists displayed side by side */}
         <div className="p-4 w-72">
           <CardContent className="flex flex-row space-x-4">
             <div className="w-1/2">
