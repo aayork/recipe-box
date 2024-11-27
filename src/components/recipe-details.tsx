@@ -9,8 +9,42 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Image from "next/image";
+import { useState } from "react";
+import { useUser } from "./user-context";
+import { useRouter } from "next/navigation";
+import { Input } from "@/components/ui/input";
+import { Button } from "./ui/button";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-export function RecipeDetails() {
+interface RecipeProps {
+  key: string;
+  id: string;
+  title: string;
+  cooktime: string;
+  description: string;
+  instructions: string;
+  ingredients: string[];
+  image: string;
+  type: string;
+  user: string;
+}
+
+export function RecipeDetails({
+  id,
+  title,
+  cooktime,
+  description,
+  instructions,
+  ingredients,
+  image,
+  type,
+  user,
+}: RecipeProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+
   return (
     <Card>
       <div className="flex flex-row">
