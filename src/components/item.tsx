@@ -42,7 +42,7 @@ export function Item({ id, title, description, image, user }: ItemProps) {
       </CardHeader>
       <CardContent>
         <div className="flex justify-between items-center">
-          <Button variant="outline">Info</Button>
+          <Button variant="outline">Details</Button>
           <div className="space-x-1">
             {currUser?._id === user && (
               <Link href={`/edit-recipe/${id}`} passHref>
