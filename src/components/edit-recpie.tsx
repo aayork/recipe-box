@@ -187,7 +187,7 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
             X
           </button>
         )}
-        <h2 className="text-2xl font-bold mb-4">Add a New Recipe</h2>
+        <h2 className="text-2xl font-bold mb-4">Edit Recipe</h2>
         <form onSubmit={handleSave} className="space-y-4">
           <div className="flex flex-col">
             <label className="font-semibold mb-1">Recipe Name</label>
@@ -240,6 +240,19 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
             >
               <Plus /> Add Ingredient
             </Button>
+          </div>
+
+          <div className="flex flex-col">
+            <label className="font-semibold mb-1">Instructions</label>
+            <Textarea
+              placeholder="Enter cooking instructions/steps"
+              value={instructions}
+              onChange={(e) => {
+                setInstructions(e.target.value);
+                setIsFormTouched(true);
+              }}
+              className="w-full h-32"
+            />
           </div>
 
           <div className="flex flex-col">

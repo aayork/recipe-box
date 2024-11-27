@@ -29,7 +29,14 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     user: user,
   } = await request.json();
   await connectMongoDB();
-  await Item.findByIdAndUpdate(id, { title, description, image });
+  await Item.findByIdAndUpdate(id, {
+    title,
+    description,
+    image,
+    cookTime,
+    ingredients,
+    instructions,
+    type  });
   return NextResponse.json({ message: "item updated" }, { status: 200 });
 }
 
