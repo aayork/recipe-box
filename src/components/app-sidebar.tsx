@@ -1,4 +1,4 @@
-import { Home, CircleUser, CookingPot } from "lucide-react";
+import { Home, CircleUser, CookingPot, Heart } from "lucide-react";
 
 import {
   Sidebar,
@@ -22,6 +22,11 @@ const items = [
     title: "My Recipes",
     url: "/my-recipes",
     icon: CookingPot,
+  },
+  {
+    title: "Favorites",
+    url: "/favorites",
+    icon: Heart,
   },
   {
     title: "Profile",
