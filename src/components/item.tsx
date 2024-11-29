@@ -40,7 +40,25 @@ export function Item({
   const [showDetails, setShowDetails] = useState(false); // State to manage modal visibility
   const { user: currUser } = useUser();
 
-  const toggleLike = () => setLiked((prev) => !prev);
+  const toggleLike = async () => {
+    if (!currUser?._id) return alert("You must be signed in to favorite recipes.");
+    setLiked((prev) => !prev);
+
+    try {
+      const method = liked ? "DELETE" : "POST";
+      const response = await fetch(`/api/items/favorites/${currUser._id}`, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ recipeId: id }),
+      });
+
+      if (!response.ok) throw new Error("Failed to update favorites");
+    } catch (error) {
+      console.error(error);
+      alert("An error occurred while updating favorites.");
+      setLiked((prev) => !prev); // Revert state on error
+    }
+  };
   const toggleDetails = () => setShowDetails((prev) => !prev);
 
   return (
