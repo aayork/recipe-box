@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { useUser } from "@/components/user-context"; // Adjust the path as needed
+import { useUser } from "@/components/user-context";
 import { useRouter } from "next/navigation";
-import AuthToggle from "@/components/auth-toggle"; // Adjust the path as needed
-import { Button } from "@/components/ui/button"; // Adjust the path as needed
+import AuthToggle from "@/components/auth-toggle";
+import { Button } from "@/components/ui/button";
 
 export default function ProfilePage() {
   const { user, signedIn, toggleSignIn, updateUser } = useUser();
@@ -14,22 +14,21 @@ export default function ProfilePage() {
   const [editedUser, setEditedUser] = useState({
     email: user?.email || "",
     username: user?.username || "",
-    password: "", // Added for changing password
+    password: "",
   });
 
   const handleSignOut = () => {
-    toggleSignIn(); // Reset user context to null
-    router.push("/"); // Redirect to home route
+    toggleSignIn();
+    router.push("/");
   };
 
   const handleSaveChanges = () => {
     updateUser({
       email: editedUser.email,
       username: editedUser.username,
-      // Include password only if it's been set
       ...(editedUser.password && { password: editedUser.password }, {}),
     });
-    setEditMode(false); // Exit edit mode
+    setEditMode(false);
   };
 
   if (!signedIn) {
