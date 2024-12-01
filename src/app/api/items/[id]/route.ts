@@ -5,17 +5,19 @@ import { NextRequest } from "next/server";
 import mongoose from "mongoose";
 
 interface RouteParams {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
-export async function GET(request: NextRequest, { params }: RouteParams) {
+export async function GET(request: NextRequest, props: RouteParams) {
+  const params = await props.params;
   const { id } = params;
   await connectMongoDB();
   const item = await Item.findOne({ _id: id });
   return NextResponse.json({ item }, { status: 200 });
 }
 
-export async function PUT(request: NextRequest, { params }: RouteParams) {
+export async function PUT(request: NextRequest, props: RouteParams) {
+  const params = await props.params;
   const { id } = params;
   const {
     title: title,
@@ -40,7 +42,8 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
   return NextResponse.json({ message: "item updated" }, { status: 200 });
 }
 
-export async function DELETE(request: NextRequest, { params }: RouteParams) {
+export async function DELETE(request: NextRequest, props: RouteParams) {
+  const params = await props.params;
   const { id } = params; // Extracts the item ID from the request parameters.
 
   // Checks if the ID is a valid MongoDB ObjectId.
