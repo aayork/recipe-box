@@ -18,6 +18,7 @@ interface UserContextType {
   signedIn: boolean;
   toggleSignIn: (userData?: User) => void;
   updateFavorites: (recipeId: string, add: boolean) => void;
+  updateUserDetails: (details: Partial<User>) => void; // Function to update user details
 }
 
 // Create the context
@@ -75,8 +76,18 @@ useEffect(() => {
       setUser({ ...user, favorites: updatedFavorites });
     }
   };
+
+  // Function to update user details
+  const updateUserDetails = (details: Partial<User>) => {
+    if (user) {
+      const updatedUser = { ...user, ...details };
+      setUser(updatedUser);
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+    }
+  };
+  
   return (
-    <UserContext.Provider value={{ user, signedIn, toggleSignIn, updateFavorites }}>
+    <UserContext.Provider value={{ user, signedIn, toggleSignIn, updateFavorites, updateUserDetails }}>
       {children}
     </UserContext.Provider>
   );
