@@ -37,7 +37,7 @@ export function Item({
   type,
 }: ItemProps) {
   const [showDetails, setShowDetails] = useState(false); // State to manage modal visibility
-  const { user: currUser, updateFavorites } = useUser();
+  const { user: currUser, updateUser } = useUser();
   const [liked, setLiked] = useState(false);
 
   useEffect(() => {
@@ -51,23 +51,23 @@ export function Item({
       alert("You must be signed in to favorite recipes.");
       return;
     }
-  
+
     const isAddingToFavorites = !liked;
-  
+
     try {
       setLiked(isAddingToFavorites); // Optimistic update
-  
+
       const method = isAddingToFavorites ? "POST" : "DELETE";
       const response = await fetch(`/api/items/favorites/${currUser._id}`, {
         method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ recipeId: id }),
       });
-  
+
       if (!response.ok) throw new Error("Failed to update favorites");
-  
+
       // Update favorites in the UserContext
-      updateFavorites(id, isAddingToFavorites);
+      updateUser({}, { recipeId: id, add: isAddingToFavorites });
     } catch (error) {
       console.error(error);
       alert("An error occurred while updating favorites.");
