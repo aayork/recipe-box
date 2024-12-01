@@ -17,7 +17,7 @@ interface UserContextType {
   user: User | null; // Null if no user is signed in
   signedIn: boolean;
   toggleSignIn: (userData?: User) => void;
-  updateFavorites: (recipeId: string, add: boolean) => void;
+  updateUser: (updates: Partial<User>, favoriteUpdate?: { recipeId: string; add: boolean }) => void;
 }
 
 // Create the context
@@ -27,22 +27,21 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [signedIn, setSignedIn] = useState(false);
   const [user, setUser] = useState<User | null>(null);
-// Load user state from localStorage on initial load
 
-useEffect(() => {
-  const savedUser = localStorage.getItem("user");
-  const savedSignedIn = localStorage.getItem("signedIn");
+  // Load user state from localStorage on initial load
+  useEffect(() => {
+    const savedUser = localStorage.getItem("user");
+    const savedSignedIn = localStorage.getItem("signedIn");
 
-  if (savedUser) setUser(JSON.parse(savedUser));
-  if (savedSignedIn) setSignedIn(JSON.parse(savedSignedIn));
-}, []);
+    if (savedUser) setUser(JSON.parse(savedUser));
+    if (savedSignedIn) setSignedIn(JSON.parse(savedSignedIn));
+  }, []);
 
-// Update localStorage whenever the state changes
-useEffect(() => {
-  localStorage.setItem("user", JSON.stringify(user));
-  localStorage.setItem("signedIn", JSON.stringify(signedIn));
-}, [user, signedIn]);
-
+  // Update localStorage whenever the state changes
+  useEffect(() => {
+    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("signedIn", JSON.stringify(signedIn));
+  }, [user, signedIn]);
 
   // Consolidated toggleSignIn function
   const toggleSignIn = (userData?: User) => {
@@ -66,17 +65,33 @@ useEffect(() => {
     }
   };
 
-  const updateFavorites = (recipeId: string, add: boolean) => {
+  // Unified updateUser function
+  const updateUser = (
+    updates: Partial<User>,
+    favoriteUpdate?: { recipeId: string; add: boolean }
+  ) => {
     if (user) {
-      const updatedFavorites = add
-        ? [...(user.favorites || []), recipeId]
-        : user.favorites.filter((favId) => favId !== recipeId);
-  
-      setUser({ ...user, favorites: updatedFavorites });
+      let updatedFavorites = user.favorites;
+
+      if (favoriteUpdate) {
+        updatedFavorites = favoriteUpdate.add
+          ? [...user.favorites, favoriteUpdate.recipeId]
+          : user.favorites.filter((favId) => favId !== favoriteUpdate.recipeId);
+      }
+
+      const updatedUser = {
+        ...user,
+        ...updates,
+        favorites: updatedFavorites,
+      };
+
+      setUser(updatedUser);
+      localStorage.setItem("user", JSON.stringify(updatedUser));
     }
   };
+
   return (
-    <UserContext.Provider value={{ user, signedIn, toggleSignIn, updateFavorites }}>
+    <UserContext.Provider value={{ user, signedIn, toggleSignIn, updateUser }}>
       {children}
     </UserContext.Provider>
   );
@@ -90,3 +105,4 @@ export const useUser = () => {
   }
   return context;
 };
+
