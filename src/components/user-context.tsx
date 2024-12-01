@@ -9,6 +9,7 @@ interface User {
   email: string;
   username?: string;
   createdAt: string;
+  favorites: string[];
 }
 
 // Define the shape of the context
@@ -16,6 +17,7 @@ interface UserContextType {
   user: User | null; // Null if no user is signed in
   signedIn: boolean;
   toggleSignIn: (userData?: User) => void;
+  updateFavorites: (recipeId: string, add: boolean) => void;
 }
 
 // Create the context
@@ -58,13 +60,23 @@ useEffect(() => {
         email: userData.email || "",
         username: userData.username || "User", // Default to "User" if username is not provided
         createdAt: userData.createdAt || new Date().toISOString(), // Provide a default date
+        favorites: userData.favorites || [],
       });
       setSignedIn(true);
     }
   };
 
+  const updateFavorites = (recipeId: string, add: boolean) => {
+    if (user) {
+      const updatedFavorites = add
+        ? [...(user.favorites || []), recipeId]
+        : user.favorites.filter((favId) => favId !== recipeId);
+  
+      setUser({ ...user, favorites: updatedFavorites });
+    }
+  };
   return (
-    <UserContext.Provider value={{ user, signedIn, toggleSignIn }}>
+    <UserContext.Provider value={{ user, signedIn, toggleSignIn, updateFavorites }}>
       {children}
     </UserContext.Provider>
   );

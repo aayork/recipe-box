@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -36,27 +36,42 @@ export function Item({
   ingredients,
   type,
 }: ItemProps) {
-  const [liked, setLiked] = useState(false);
   const [showDetails, setShowDetails] = useState(false); // State to manage modal visibility
-  const { user: currUser } = useUser();
+  const { user: currUser, updateFavorites } = useUser();
+  const [liked, setLiked] = useState(false);
+
+  useEffect(() => {
+    if (currUser?.favorites?.includes(id)) {
+      setLiked(true);
+    }
+  }, [currUser?.favorites, id]);
 
   const toggleLike = async () => {
-    if (!currUser?._id) return alert("You must be signed in to favorite recipes.");
-    setLiked((prev) => !prev);
-
+    if (!currUser) {
+      alert("You must be signed in to favorite recipes.");
+      return;
+    }
+  
+    const isAddingToFavorites = !liked;
+  
     try {
-      const method = liked ? "DELETE" : "POST";
+      setLiked(isAddingToFavorites); // Optimistic update
+  
+      const method = isAddingToFavorites ? "POST" : "DELETE";
       const response = await fetch(`/api/items/favorites/${currUser._id}`, {
         method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ recipeId: id }),
       });
-
+  
       if (!response.ok) throw new Error("Failed to update favorites");
+  
+      // Update favorites in the UserContext
+      updateFavorites(id, isAddingToFavorites);
     } catch (error) {
       console.error(error);
       alert("An error occurred while updating favorites.");
-      setLiked((prev) => !prev); // Revert state on error
+      setLiked((prev) => !prev); // Revert on error
     }
   };
   const toggleDetails = () => setShowDetails((prev) => !prev);

@@ -1,37 +1,61 @@
 import { NextResponse } from "next/server";
-import Item from "@/models/itemSchema";
+import { User } from "@/models/UserSchema";
 
+// Get the favorite recipes for a user
 export async function GET(request: Request, { params }: { params: { userid: string } }) {
   try {
     const { userid } = params;
-    const favorites = await Item.find({ favoritedBy: userid }).exec();
-    return NextResponse.json({ items: favorites });
+    const user = await User.findById(userid).populate("favorites");
+    if (!user) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+    return NextResponse.json({ items: user.favorites });
   } catch (error) {
-    console.error(error);
+    console.error("GET Favorites Error:", error);
     return NextResponse.json({ error: "Failed to fetch favorites" }, { status: 500 });
   }
 }
 
+// Add a recipe to the user's favorites
 export async function POST(request: Request, { params }: { params: { userid: string } }) {
   try {
     const { userid } = params;
     const { recipeId } = await request.json();
-    await Item.findByIdAndUpdate(recipeId, { $addToSet: { favoritedBy: userid } }).exec();
+
+    const user = await User.findById(userid);
+    if (!user) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    if (!user.favorites.includes(recipeId)) {
+      user.favorites.push(recipeId);
+      await user.save();
+    }
+
     return NextResponse.json({ message: "Recipe added to favorites" });
   } catch (error) {
-    console.error(error);
+    console.error("POST Favorites Error:", error);
     return NextResponse.json({ error: "Failed to add to favorites" }, { status: 500 });
   }
 }
 
+// Remove a recipe from the user's favorites
 export async function DELETE(request: Request, { params }: { params: { userid: string } }) {
   try {
     const { userid } = params;
     const { recipeId } = await request.json();
-    await Item.findByIdAndUpdate(recipeId, { $pull: { favoritedBy: userid } }).exec();
+
+    const user = await User.findById(userid);
+    if (!user) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    user.favorites = user.favorites.filter((id: { toString: () => any; }) => id.toString() !== recipeId);
+    await user.save();
+
     return NextResponse.json({ message: "Recipe removed from favorites" });
   } catch (error) {
-    console.error(error);
+    console.error("DELETE Favorites Error:", error);
     return NextResponse.json({ error: "Failed to remove from favorites" }, { status: 500 });
   }
 }
