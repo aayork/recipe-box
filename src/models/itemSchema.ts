@@ -10,6 +10,7 @@ interface Item extends Document {
   instructions: string;
   type: string;
   user: Schema.Types.ObjectId;
+  //favoritedBy: Schema.Types.ObjectId[];
 }
 
 const itemSchema = new Schema<Item>({
@@ -22,6 +23,7 @@ const itemSchema = new Schema<Item>({
   instructions: { type: String, required: true },
   type: { type: String, required: true },
   user: { type: Schema.Types.ObjectId, ref: "User", required: true }, // Association with User
+  //favoritedBy: [{ type: Schema.Types.ObjectId, ref: "User" }],
 });
 
 const Item: Model<Item> =

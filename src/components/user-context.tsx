@@ -9,6 +9,7 @@ interface User {
   email: string;
   username?: string;
   createdAt: string;
+  favorites: string[];
 }
 
 // Define the shape of the context
@@ -16,7 +17,7 @@ interface UserContextType {
   user: User | null; // Null if no user is signed in
   signedIn: boolean;
   toggleSignIn: (userData?: User) => void;
-  updateUserDetails: (details: Partial<User>) => void; // Function to update user details
+  updateUser: (updates: Partial<User>, favoriteUpdate?: { recipeId: string; add: boolean }) => void;
 }
 
 // Create the context
@@ -58,22 +59,39 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         email: userData.email || "",
         username: userData.username || "User", // Default to "User" if username is not provided
         createdAt: userData.createdAt || new Date().toISOString(), // Provide a default date
+        favorites: userData.favorites || [],
       });
       setSignedIn(true);
     }
   };
 
-  // Function to update user details
-  const updateUserDetails = (details: Partial<User>) => {
+  // Unified updateUser function
+  const updateUser = (
+    updates: Partial<User>,
+    favoriteUpdate?: { recipeId: string; add: boolean }
+  ) => {
     if (user) {
-      const updatedUser = { ...user, ...details };
+      let updatedFavorites = user.favorites;
+
+      if (favoriteUpdate) {
+        updatedFavorites = favoriteUpdate.add
+          ? [...user.favorites, favoriteUpdate.recipeId]
+          : user.favorites.filter((favId) => favId !== favoriteUpdate.recipeId);
+      }
+
+      const updatedUser = {
+        ...user,
+        ...updates,
+        favorites: updatedFavorites,
+      };
+
       setUser(updatedUser);
       localStorage.setItem("user", JSON.stringify(updatedUser));
     }
   };
 
   return (
-    <UserContext.Provider value={{ user, signedIn, toggleSignIn, updateUserDetails }}>
+    <UserContext.Provider value={{ user, signedIn, toggleSignIn, updateUser }}>
       {children}
     </UserContext.Provider>
   );
@@ -87,3 +105,4 @@ export const useUser = () => {
   }
   return context;
 };
+

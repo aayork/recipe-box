@@ -37,6 +37,7 @@ export default function LoginForm({ closeModal }: { closeModal: () => void }) {
         email: data.user.email,
         username: data.user.username,
         createdAt: data.user.createdAt,
+        favorites: data.user.favorites,
       });
 
       setMessage("");

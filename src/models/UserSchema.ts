@@ -6,6 +6,7 @@ export interface IUser extends Document {
   username: string;
   email: string;
   password: string;
+  favorites: mongoose.Types.ObjectId[];
 }
 
 const userSchema = new Schema<IUser>(
@@ -14,6 +15,7 @@ const userSchema = new Schema<IUser>(
     username: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
+    favorites: [{ type: Schema.Types.ObjectId, ref: "Item" }],
   },
   {
     timestamps: true, // Automatically adds createdAt and updatedAt fields
