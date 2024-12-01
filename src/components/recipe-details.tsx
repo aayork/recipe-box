@@ -8,8 +8,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Image from "next/image";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
 
 interface RecipeProps {
   id: string;
@@ -49,7 +47,7 @@ export function RecipeDetails({
           </div>
         </div>
         <div className="w-px bg-border ml-1"></div>
-        <div className="p-4 w-72">
+        <div className="p-4 w-72 max-h-[415px] overflow-y-auto">
           <CardContent className="flex flex-col space-y-4">
             <div>
               <p className="font-semibold mb-2">Ingredients</p>
