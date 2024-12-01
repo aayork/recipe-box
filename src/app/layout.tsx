@@ -5,18 +5,26 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { Header } from "@/components/header";
 import { UserProvider } from "@/components/user-context";
-import { RecipeProvider } from "@/components/recipe-context";
-import { ThemeProvider } from "@/components/ui/theme-provider";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
+const baskervvilleSC = localFont({
+  src: "./fonts/BaskervvilleSC-Regular.ttf",
+  variable: "--font-baskervville-sc",
+  weight: "400",
+  style: "normal",
 });
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+
+const wittgensteinVF = localFont({
+  src: "./fonts/Wittgenstein-VariableFont_wght.ttf",
+  variable: "--font-wittgenstein-vf",
+  weight: "400",
+  style: "normal",
+});
+
+const wittgensteinItalicVF = localFont({
+  src: "./fonts/Wittgenstein-Italic-VariableFont_wght.ttf",
+  variable: "--font-wittgenstein-italic-vf",
+  weight: "400",
+  style: "normal",
 });
 
 export const metadata: Metadata = {
@@ -29,32 +37,21 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const signedIn = false;
-
   return (
     <html lang="en">
-      <body>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <UserProvider>
-            <RecipeProvider>
-              <SidebarProvider>
-                <AppSidebar />
-                <main className="w-full">
-                  <div className="flex items-center">
-                    <SidebarTrigger className="ml-1" />
-                    <Header />
-                  </div>
-                  {children}
-                </main>
-              </SidebarProvider>
-            </RecipeProvider>
-          </UserProvider>
-        </ThemeProvider>
+      <body className={wittgensteinVF.variable}>
+        <UserProvider>
+          <SidebarProvider>
+            <AppSidebar />
+            <main className="w-full">
+              <div className="flex items-center">
+                <SidebarTrigger className="ml-1" />
+                <Header />
+              </div>
+              {children}
+            </main>
+          </SidebarProvider>
+        </UserProvider>
       </body>
     </html>
   );

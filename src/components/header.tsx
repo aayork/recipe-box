@@ -1,32 +1,66 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
+import { useState } from "react";
 import { useUser } from "./user-context";
 import { useRouter } from "next/navigation";
-import { ModeToggle } from "./mode-toggle";
+import AuthToggle from "./auth-toggle";
+import { Input } from "@/components/ui/input";
+import { Button } from "./ui/button";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export function Header() {
-  const { signedIn, toggleSignIn } = useUser();
+  const { user, signedIn, toggleSignIn } = useUser();
   const router = useRouter();
+  const pathname = usePathname();
+  const [showAuthModal, setShowAuthModal] = useState(false);
 
   const handleSignOut = () => {
-    toggleSignIn();
-    router.push("/"); // Redirect to home route on logout
+    toggleSignIn(); // Reset user context
+    router.push("/"); // Redirect to home route
   };
 
   return (
-    <div className="flex items-center justify-between p-1 w-full">
-      <h1 className="font-bold text-2xl">Welcome to Recipe Box!</h1>
-      <div className="flex items-center ml-auto">
-        <ModeToggle />
-        <Input className="w-56" type="search" placeholder="Search" />
-        <button
-          onClick={signedIn ? handleSignOut : toggleSignIn}
-          className="ml-2 px-3 py-[5px] rounded-md bg-blue-500 text-white hover:bg-blue-600 border border-input"
-        >
-          {signedIn ? "Sign Out" : "Sign In"}
-        </button>
+    <>
+      <div className="flex items-center justify-between p-1 w-full">
+        <div className="flex items-center gap-4">
+          {pathname === "/" ? (
+            <img
+              src="/images/logo-transparent.png"
+              alt="Recipe Box Icon"
+              width={50}
+              height={50}
+            />
+          ) : (
+            <Link href="/" passHref>
+              <img
+                src="/images/logo-transparent.png"
+                alt="Recipe Box Icon"
+                width={50}
+                height={50}
+                className="cursor-pointer"
+              />
+            </Link>
+          )}
+          <h1 className="font-bold text-2xl">
+            {signedIn
+              ? `Welcome to Recipe Box, ${user?.username || "User"}!`
+              : "Welcome to Recipe Box!"}
+          </h1>
+        </div>
+        <div className="flex items-center">
+          <Input className="w-56 ml-2" type="search" placeholder="Search" />
+          <Button
+            onClick={signedIn ? handleSignOut : () => setShowAuthModal(true)}
+            className="ml-2 bg-blue-500 text-white hover:bg-blue-600 border border-input"
+          >
+            {signedIn ? "Sign Out" : "Sign In"}
+          </Button>
+        </div>
       </div>
-    </div>
+      {showAuthModal && (
+        <AuthToggle closeModal={() => setShowAuthModal(false)} />
+      )}
+    </>
   );
 }

@@ -1,35 +1,67 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useUser } from "./user-context";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 import { Plus, Trash2 } from "lucide-react";
 
-interface AddRecipeProps {
+interface EditRecipeProps {
   onSave: (newRecipe: any) => void;
   onClose: () => void;
   isPage?: boolean; // Distinguish between modal and page usage
+  recipeId: string;
 }
 
-const AddRecipe: React.FC<AddRecipeProps> = ({
+const EditRecipe: React.FC<EditRecipeProps> = ({
   onSave,
   onClose,
   isPage = false,
+  recipeId,
 }) => {
   const [name, setName] = useState("");
   const [cookTime, setCookTime] = useState("");
-  const [ingredients, setIngredients] = useState<string[]>([""]); // Store ingredients as an array
+  const [ingredients, setIngredients] = useState<string[]>([""]);
   const [instructions, setInstructions] = useState("");
   const [description, setDescription] = useState("");
   const [type, setType] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [isFormTouched, setIsFormTouched] = useState(false);
-  const { user, signedIn } = useUser(); // Access signedIn status
+  const [loading, setLoading] = useState(true); // To track loading state
+  const { user, signedIn } = useUser();
+
+  // Fetch the existing recipe data
+  useEffect(() => {
+    const fetchRecipe = async () => {
+      try {
+        const response = await fetch(`/api/items/${recipeId}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch the recipe data.");
+        }
+        const { item } = await response.json(); // Destructure 'item' from response
+        console.log("Fetched Recipe Item:", item);
+
+        setName(item.title || "");
+        setCookTime(item.cookTime || "");
+        setIngredients(item.ingredients || [""]);
+        setInstructions(item.instructions || "");
+        setDescription(item.description || "");
+        setType(item.type || "");
+        setImageUrl(item.image || "");
+      } catch (error) {
+        console.error(error);
+        alert("An error occurred while loading the recipe.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRecipe();
+  }, [recipeId]);
 
   const clearForm = () => {
     setName("");
     setCookTime("");
-    setIngredients([""]); // Reset ingredients to an array with one empty string
+    setIngredients([""]);
     setInstructions("");
     setType("");
     setImageUrl("");
@@ -41,7 +73,7 @@ const AddRecipe: React.FC<AddRecipeProps> = ({
     e.preventDefault();
 
     if (!signedIn) {
-      alert("You must be signed in to add a recipe.");
+      alert("You must be signed in to edit a recipe.");
       return;
     }
 
@@ -64,8 +96,8 @@ const AddRecipe: React.FC<AddRecipeProps> = ({
     console.log("Request Body:", JSON.stringify(requestBody, null, 2));
 
     try {
-      const response = await fetch("/api/items", {
-        method: "POST",
+      const response = await fetch(`/api/items/${recipeId}`, {
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(requestBody),
       });
@@ -93,13 +125,44 @@ const AddRecipe: React.FC<AddRecipeProps> = ({
     };
 
   const handleAddIngredient = () => {
-    setIngredients([...ingredients, ""]); // Add a new empty ingredient field
+    setIngredients([...ingredients, ""]);
   };
 
   const handleRemoveIngredient = (index: number) => {
     const newIngredients = ingredients.filter((_, i) => i !== index);
-    setIngredients(newIngredients); // Remove ingredient at index
+    setIngredients(newIngredients);
   };
+
+  const handleDelete = async () => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this recipe? This action cannot be undone.",
+    );
+    if (!confirmDelete) return;
+
+    try {
+      const response = await fetch(`/api/items/${recipeId}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete the recipe.");
+      }
+
+      alert("Recipe deleted successfully.");
+      onClose(); // Close the modal/page after deletion
+    } catch (error) {
+      console.error(error);
+      alert("An error occurred while deleting the recipe.");
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p>Loading recipe...</p>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -124,7 +187,7 @@ const AddRecipe: React.FC<AddRecipeProps> = ({
             X
           </button>
         )}
-        <h2 className="text-2xl font-bold mb-4">Add a New Recipe</h2>
+        <h2 className="text-2xl font-bold mb-4">Edit Recipe</h2>
         <form onSubmit={handleSave} className="space-y-4">
           <div className="flex flex-col">
             <label className="font-semibold mb-1">Recipe Name</label>
@@ -228,17 +291,25 @@ const AddRecipe: React.FC<AddRecipeProps> = ({
               }}
             />
           </div>
-
-          <Button
-            type="submit"
-            className="mt-4 bg-green-500 hover:bg-green-600 w-full"
-          >
-            Save
-          </Button>
+          <div className="flex space-x-1">
+            <Button
+              type="submit"
+              className="mt-1 bg-green-500 hover:bg-green-600 w-full"
+            >
+              Save Recipe
+            </Button>
+            <Button
+              type="button"
+              onClick={handleDelete}
+              className="mt-1 bg-red-500 hover:bg-red-600 w-full"
+            >
+              Delete Recipe
+            </Button>
+          </div>
         </form>
       </div>
     </div>
   );
 };
 
-export default AddRecipe;
+export default EditRecipe;

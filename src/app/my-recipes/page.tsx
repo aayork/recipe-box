@@ -1,8 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { useUser } from "@/components/user-context";
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import { Item } from "@/components/item";
 import { Plus } from "lucide-react";
 
@@ -22,35 +22,38 @@ export interface Recipe {
 const Home = () => {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const { signedIn } = useUser();
-
-  const [loading, setLoading] = useState(true);
+  const { signedIn, user } = useUser(); // Assuming `user` contains the user's details including `_id`
 
   useEffect(() => {
-    const fetchRecipes = async () => {
+    if (!user?._id) return; // If user is not available, don't fetch
+
+    const fetchUserRecipes = async () => {
       try {
-        setLoading(true);
-        const response = await fetch("http://localhost:3000/api/items/");
-        if (!response.ok) throw new Error("Failed to fetch recipes");
+        const response = await fetch(
+          `http://localhost:3000/api/items?userId=${user._id}`,
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch recipes");
+        }
         const data = await response.json();
-        const sortedRecipes = data.items
-          .sort(
-            (a: Recipe, b: Recipe) =>
-              new Date(b.updated_date).getTime() -
-              new Date(a.updated_date).getTime(),
-          )
-          .slice(0, 15);
-        setRecipes(sortedRecipes);
+
+        // Ensure recipes are filtered for the current user
+        const userRecipes = data.items.filter(
+          (recipe: Recipe) => recipe.user === user._id,
+        );
+        setRecipes(userRecipes);
       } catch (err) {
         console.error(err);
         setError("Failed to load recipes. Please try again later.");
-      } finally {
-        setLoading(false);
       }
     };
 
-    fetchRecipes();
-  }, []);
+    fetchUserRecipes();
+  }, [user?._id]);
+
+  if (error) {
+    return <div>{error}</div>;
+  }
 
   return (
     <div>
@@ -66,20 +69,24 @@ const Home = () => {
         )}
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 m-2">
-        {recipes.map((recipe) => (
-          <Item
-            key={recipe._id}
-            id={recipe._id}
-            title={recipe.title}
-            description={recipe.description}
-            image={recipe.image}
-            user={recipe.user}
-            ingredients={recipe.ingredients}
-            instructions={recipe.instructions}
-            cookTime={recipe.cookTime}
-            type={recipe.type}
-          />
-        ))}
+        {recipes.length > 0 ? (
+          recipes.map((recipe) => (
+            <Item
+              key={recipe._id}
+              id={recipe._id}
+              title={recipe.title}
+              description={recipe.description}
+              image={recipe.image}
+              user={recipe.user}
+              ingredients={recipe.ingredients}
+              instructions={recipe.instructions}
+              cookTime={recipe.cookTime}
+              type={recipe.type}
+            />
+          ))
+        ) : (
+          <p className="m-2 text-gray-600">You don’t have any recipes yet.</p>
+        )}
       </div>
     </div>
   );

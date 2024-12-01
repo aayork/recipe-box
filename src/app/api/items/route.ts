@@ -10,9 +10,29 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const { title, description, image } = await request.json(); // Extracts data from the request body.
+  const {
+    title,
+    description,
+    image,
+    updated_date,
+    cookTime,
+    ingredients,
+    instructions,
+    type,
+    user,
+  } = await request.json(); // Extracts data from the request body.
   await connectMongoDB(); // Connects to the MongoDB database.
-  await Item.create({ title, description, image }); // Creates a new item document in the database with the provided data.
+  await Item.create({
+    title,
+    description,
+    image,
+    updated_date,
+    cookTime,
+    ingredients,
+    instructions,
+    type,
+    user,
+  }); // Creates a new item document in the database with the provided data.
   return NextResponse.json(
     { message: "Item added successfully" },
     { status: 201 },
