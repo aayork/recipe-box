@@ -9,15 +9,26 @@ import { Button } from "./ui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export function Header() {
+interface HeaderProps {
+  onSearch: (query: string) => void;
+}
+
+export function Header({ onSearch }: HeaderProps) {
   const { user, signedIn, toggleSignIn } = useUser();
   const router = useRouter();
   const pathname = usePathname();
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleSignOut = () => {
     toggleSignIn(); // Reset user context
     router.push("/"); // Redirect to home route
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+    onSearch(query); // Pass query to parent
   };
 
   return (
@@ -49,7 +60,7 @@ export function Header() {
           </h1>
         </div>
         <div className="flex items-center">
-          <Input className="w-56 ml-2" type="search" placeholder="Search" />
+          <Input className="w-56 ml-2" type="search" placeholder="Search" value={searchQuery} onChange={handleSearchChange} />
           <Button
             onClick={signedIn ? handleSignOut : () => setShowAuthModal(true)}
             className="ml-2 bg-blue-500 text-white hover:bg-blue-600 border border-input"
@@ -64,3 +75,7 @@ export function Header() {
     </>
   );
 }
+function onSearch(value: string) {
+  throw new Error("Function not implemented.");
+}
+
