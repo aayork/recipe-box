@@ -5,11 +5,7 @@ import { useUser } from "@/components/user-context";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 
-export default function LoginForm({
-  closeModalAction,
-}: {
-  closeModalAction: () => void;
-}) {
+export default function LoginForm({ closeModal }: { closeModal: () => void }) {
   const { toggleSignIn } = useUser();
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [message, setMessage] = useState("");
@@ -46,7 +42,7 @@ export default function LoginForm({
 
       setMessage("");
       setFormData({ email: "", password: "" });
-      closeModalAction();
+      closeModal();
     } catch (error: any) {
       setMessage(error.message);
     }

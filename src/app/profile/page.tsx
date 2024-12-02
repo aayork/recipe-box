@@ -5,30 +5,16 @@ import { useUser } from "@/components/user-context";
 import { useRouter } from "next/navigation";
 import AuthToggle from "@/components/auth-toggle";
 import { Button } from "@/components/ui/button";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 export default function ProfilePage() {
-  const { user, signedIn, toggleSignIn, updateUser } = useUser();
+  const { user, signedIn, toggleSignIn } = useUser();
   const router = useRouter();
   const [showAuthModal, setShowAuthModal] = useState(false);
-  const [editMode, setEditMode] = useState(false);
-  const [editedUser, setEditedUser] = useState({
-    email: user?.email || "",
-    username: user?.username || "",
-    password: "",
-  });
 
   const handleSignOut = () => {
     toggleSignIn();
     router.push("/");
-  };
-
-  const handleSaveChanges = () => {
-    updateUser({
-      email: editedUser.email,
-      username: editedUser.username,
-      ...(editedUser.password && { password: editedUser.password }, {}),
-    });
-    setEditMode(false);
   };
 
   if (!signedIn) {
@@ -51,80 +37,26 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 text-gray-800 p-6">
-      <div className="bg-white text-gray-900 p-8 rounded-lg shadow-md max-w-md w-full text-center">
-        <h1 className="text-4xl font-bold mb-6">
-          {editMode ? "Edit Profile" : `${user?.username}'s Profile`}
-        </h1>
-        {editMode ? (
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleSaveChanges();
-            }}
+    <div className="bg-gray-100">
+      <SidebarTrigger className="m-2" />
+      <div className="min-h-screen flex flex-col items-center justify-center text-gray-800 p-6">
+        <div className="bg-white text-gray-900 p-8 rounded-lg shadow-md max-w-md w-full text-center">
+          <h1 className="text-4xl font-bold mb-6">
+            {user?.username}'s Profile
+          </h1>
+          <p className="text-lg mb-2">
+            <strong>Email:</strong> {user?.email}
+          </p>
+          <p className="text-lg mb-2">
+            <strong>Username:</strong> {user?.username}
+          </p>
+          <Button
+            onClick={handleSignOut}
+            className="w-full p-2 bg-red-500 text-white rounded hover:bg-red-600 mt-2"
           >
-            <input
-              type="email"
-              className="text-input mb-4 p-2 w-full border rounded text-black"
-              value={editedUser.email}
-              onChange={(e) =>
-                setEditedUser({ ...editedUser, email: e.target.value })
-              }
-              placeholder="Email"
-            />
-            <input
-              type="text"
-              className="text-input mb-4 p-2 w-full border rounded text-black"
-              value={editedUser.username}
-              onChange={(e) =>
-                setEditedUser({ ...editedUser, username: e.target.value })
-              }
-              placeholder="Username"
-            />
-            <input
-              type="password"
-              className="text-input mb-4 p-2 w-full border rounded text-black"
-              value={editedUser.password}
-              onChange={(e) =>
-                setEditedUser({ ...editedUser, password: e.target.value })
-              }
-              placeholder="New Password"
-            />
-            <Button
-              type="submit"
-              className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-            >
-              Save Changes
-            </Button>
-            <Button
-              onClick={() => setEditMode(false)}
-              className="w-full p-2 bg-gray-500 text-white rounded hover:bg-gray-600 mt-2"
-            >
-              Cancel
-            </Button>
-          </form>
-        ) : (
-          <>
-            <p className="text-lg mb-2">
-              <strong>Email:</strong> {user?.email}
-            </p>
-            <p className="text-lg mb-2">
-              <strong>Username:</strong> {user?.username}
-            </p>
-            <Button
-              onClick={() => setEditMode(true)}
-              className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-            >
-              Edit Profile
-            </Button>
-            <Button
-              onClick={handleSignOut}
-              className="w-full p-2 bg-red-500 text-white rounded hover:bg-red-600 mt-2"
-            >
-              Sign Out
-            </Button>
-          </>
-        )}
+            Sign Out
+          </Button>
+        </div>
       </div>
     </div>
   );
