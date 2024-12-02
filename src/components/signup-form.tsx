@@ -5,7 +5,11 @@ import { useUser } from "@/components/user-context";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 
-export default function SignupForm({ closeModal }: { closeModal: () => void }) {
+export default function SignupForm({
+  closeModalAction,
+}: {
+  closeModalAction: () => void;
+}) {
   const { toggleSignIn } = useUser();
   const [formData, setFormData] = useState({
     username: "",
@@ -23,9 +27,9 @@ export default function SignupForm({ closeModal }: { closeModal: () => void }) {
     }
 
     try {
-      const response = await fetch('/api/auth/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
@@ -35,17 +39,11 @@ export default function SignupForm({ closeModal }: { closeModal: () => void }) {
         throw new Error(data.message || "Something went wrong");
       }
 
-      toggleSignIn({
-        _id: data.user._id,
-        name: data.user.name,
-        email: data.user.email,
-        username: data.user.username,
-        createdAt: data.user.createdAt,
-      });
+      toggleSignIn(data.user);
 
       setMessage("");
       setFormData({ username: "", email: "", password: "" });
-      closeModal(); // Close modal after successful login
+      closeModalAction(); // Close modal after successful login
     } catch (error: any) {
       setMessage(error.message);
     }

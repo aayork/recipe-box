@@ -57,7 +57,7 @@ const Home = () => {
 
   return (
     <div>
-      <Header onSearch={(query: string) => setSearchQuery(query)} />
+      <Header onSearchAction={(query: string) => setSearchQuery(query)} />
       <div className="flex items-center m-3">
         <h1 className="font-bold text-xl">New Recipes</h1>
         {signedIn && (

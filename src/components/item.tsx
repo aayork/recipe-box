@@ -36,7 +36,7 @@ export function Item({
   ingredients,
   type,
 }: ItemProps) {
-  const [showDetails, setShowDetails] = useState(false); // State to manage modal visibility
+  const [showDetails, setShowDetails] = useState(false);
   const { user: currUser, updateUser } = useUser();
   const [liked, setLiked] = useState(false);
 
@@ -55,7 +55,7 @@ export function Item({
     const isAddingToFavorites = !liked;
 
     try {
-      setLiked(isAddingToFavorites); // Optimistic update
+      setLiked(isAddingToFavorites);
 
       const method = isAddingToFavorites ? "POST" : "DELETE";
       const response = await fetch(`/api/items/favorites/${currUser._id}`, {
@@ -71,7 +71,7 @@ export function Item({
     } catch (error) {
       console.error(error);
       alert("An error occurred while updating favorites.");
-      setLiked((prev) => !prev); // Revert on error
+      setLiked((prev) => !prev);
     }
   };
   const toggleDetails = () => setShowDetails((prev) => !prev);
@@ -80,7 +80,14 @@ export function Item({
     <>
       <Card className="w-fit h-fit p-1">
         <div className="relative w-[200px] h-[180px] overflow-hidden rounded-xl">
-          <Image src={image} alt={title} fill className="object-cover" />
+          <Image
+            src={image}
+            alt={title}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            priority
+            className="object-cover"
+          />
         </div>
         <CardHeader>
           <CardTitle className="mt-1">{title}</CardTitle>

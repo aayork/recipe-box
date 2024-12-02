@@ -25,7 +25,7 @@ const Home = () => {
   const { signedIn, user } = useUser(); // Assuming `user` contains the user's details including `_id`
 
   useEffect(() => {
-    if (!user?._id) return; // If user is not available, don't fetch
+    if (!user?._id) return;
 
     const fetchUserRecipes = async () => {
       try {
@@ -37,7 +37,6 @@ const Home = () => {
         }
         const data = await response.json();
 
-        // Ensure recipes are filtered for the current user
         const userRecipes = data.items.filter(
           (recipe: Recipe) => recipe.user === user._id,
         );
