@@ -57,7 +57,7 @@ export function Header({ onSearchAction }: HeaderProps) {
         </div>
       </div>
       {showAuthModal && (
-        <AuthToggle closeModal={() => setShowAuthModal(false)} />
+        <AuthToggle closeModalAction={() => setShowAuthModal(false)} />
       )}
     </>
   );

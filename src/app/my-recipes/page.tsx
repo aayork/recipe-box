@@ -57,14 +57,12 @@ const Home = () => {
 
   return (
     <div>
-      <div className="flex items-center m-3">
-        <div className="flex">
-          <SidebarTrigger className="m-2" />
-          <h1 className="font-bold text-xl">My Recipes</h1>
-        </div>
+      <div className="flex items-center space-x-2 m-1">
+        <SidebarTrigger className="" />
+        <h1 className="font-bold text-xl">My Recipes</h1>
         {signedIn && (
           <Link href="/add-recipe">
-            <button className="flex items-center gap-2 m-1 p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 border border-input">
+            <button className="flex items-center gap-2 p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 border border-input">
               <Plus size={16} />
               Add a Recipe
             </button>

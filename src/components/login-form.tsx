@@ -5,7 +5,11 @@ import { useUser } from "@/components/user-context";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 
-export default function LoginForm({ closeModal }: { closeModal: () => void }) {
+export default function LoginForm({
+  closeModalAction,
+}: {
+  closeModalAction: () => void;
+}) {
   const { toggleSignIn } = useUser();
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [message, setMessage] = useState("");
@@ -42,7 +46,7 @@ export default function LoginForm({ closeModal }: { closeModal: () => void }) {
 
       setMessage("");
       setFormData({ email: "", password: "" });
-      closeModal();
+      closeModalAction();
     } catch (error: any) {
       setMessage(error.message);
     }

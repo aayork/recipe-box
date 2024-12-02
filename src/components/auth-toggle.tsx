@@ -1,11 +1,15 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import SignupForm from '@/components/signup-form';
-import LoginForm from '@/components/login-form';
-import { useRouter } from 'next/navigation';
+import { useState } from "react";
+import SignupForm from "@/components/signup-form";
+import LoginForm from "@/components/login-form";
+import { useRouter } from "next/navigation";
 
-export default function AuthToggle({ closeModal }: { closeModal: () => void }) {
+export default function AuthToggle({
+  closeModalAction,
+}: {
+  closeModalAction: () => void;
+}) {
   const [isSignup, setIsSignup] = useState(false);
   const router = useRouter();
 
@@ -14,7 +18,7 @@ export default function AuthToggle({ closeModal }: { closeModal: () => void }) {
   };
 
   const handleClose = () => {
-    closeModal();
+    closeModalAction();
     router.push("/"); // Redirect to the home page after closing the modal
   };
 
@@ -30,16 +34,20 @@ export default function AuthToggle({ closeModal }: { closeModal: () => void }) {
         </button>
 
         <h1 className="text-2xl font-bold mb-4 text-center">
-          {isSignup ? 'Sign Up' : 'Log In'}
+          {isSignup ? "Sign Up" : "Log In"}
         </h1>
-        {isSignup ? <SignupForm closeModal={handleClose} /> : <LoginForm closeModal={handleClose} />}
+        {isSignup ? (
+          <SignupForm closeModalAction={handleClose} />
+        ) : (
+          <LoginForm closeModalAction={handleClose} />
+        )}
         <div className="flex justify-center mt-4">
           <button
             onClick={toggleForm}
             className="text-blue-500 underline hover:text-blue-700"
           >
             {isSignup
-              ? 'Already have an account? Log In'
+              ? "Already have an account? Log In"
               : "Don't have an account? Sign Up"}
           </button>
         </div>

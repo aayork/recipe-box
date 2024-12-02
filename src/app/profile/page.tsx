@@ -29,7 +29,7 @@ export default function ProfilePage() {
             Sign In
           </Button>
           {showAuthModal && (
-            <AuthToggle closeModal={() => setShowAuthModal(false)} />
+            <AuthToggle closeModalAction={() => setShowAuthModal(false)} />
           )}
         </div>
       </div>
@@ -38,7 +38,7 @@ export default function ProfilePage() {
 
   return (
     <div className="bg-gray-100">
-      <SidebarTrigger className="m-2" />
+      <SidebarTrigger className="m-1" />
       <div className="min-h-screen flex flex-col items-center justify-center text-gray-800 p-6">
         <div className="bg-white text-gray-900 p-8 rounded-lg shadow-md max-w-md w-full text-center">
           <h1 className="text-4xl font-bold mb-6">
