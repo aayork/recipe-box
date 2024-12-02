@@ -26,7 +26,7 @@ export function Header({ onSearchAction }: HeaderProps) {
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
     setSearchQuery(query);
-    onSearch(query);
+    onSearchAction(query);
   };
 
   return (
@@ -62,6 +62,6 @@ export function Header({ onSearchAction }: HeaderProps) {
     </>
   );
 }
-function onSearch(value: string) {
+function onSearchAction(value: string) {
   throw new Error("Function not implemented.");
 }
