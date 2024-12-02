@@ -20,7 +20,10 @@ export const authConfig: NextAuthOptions = {
         await connectMongoDB();
 
         const user = await User.findOne({ email: credentials?.email });
-        if (!user || !(await bcrypt.compare(credentials?.password || "", user.password))) {
+        if (
+          !user ||
+          !(await bcrypt.compare(credentials?.password || "", user.password))
+        ) {
           throw new Error("Invalid email or password");
         }
 
@@ -29,7 +32,7 @@ export const authConfig: NextAuthOptions = {
     }),
   ],
   pages: {
-    signIn: "/auth/login", // Custom login page
-    error: "/auth/error", // Custom error page
+    signIn: "/auth/login",
+    error: "/auth/error",
   },
 };

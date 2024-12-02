@@ -6,53 +6,34 @@ import { useRouter } from "next/navigation";
 import AuthToggle from "./auth-toggle";
 import { Input } from "@/components/ui/input";
 import { Button } from "./ui/button";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { SidebarTrigger } from "./ui/sidebar";
 
 interface HeaderProps {
-  onSearch: (query: string) => void;
+  onSearchAction: (query: string) => void;
 }
 
-export function Header({ onSearch }: HeaderProps) {
+export function Header({ onSearchAction }: HeaderProps) {
   const { user, signedIn, toggleSignIn } = useUser();
   const router = useRouter();
-  const pathname = usePathname();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleSignOut = () => {
-    toggleSignIn(); // Reset user context
-    router.push("/"); // Redirect to home route
+    toggleSignIn();
+    router.push("/");
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
     setSearchQuery(query);
-    onSearch(query); // Pass query to parent
+    onSearch(query);
   };
 
   return (
     <>
       <div className="flex items-center justify-between p-1 w-full">
         <div className="flex items-center gap-4">
-          {pathname === "/" ? (
-            <img
-              src="/images/logo-transparent.png"
-              alt="Recipe Box Icon"
-              width={50}
-              height={50}
-            />
-          ) : (
-            <Link href="/" passHref>
-              <img
-                src="/images/logo-transparent.png"
-                alt="Recipe Box Icon"
-                width={50}
-                height={50}
-                className="cursor-pointer"
-              />
-            </Link>
-          )}
+          <SidebarTrigger />
           <h1 className="font-bold text-2xl">
             {signedIn
               ? `Welcome to Recipe Box, ${user?.username || "User"}!`
@@ -60,7 +41,13 @@ export function Header({ onSearch }: HeaderProps) {
           </h1>
         </div>
         <div className="flex items-center">
-          <Input className="w-56 ml-2" type="search" placeholder="Search" value={searchQuery} onChange={handleSearchChange} />
+          <Input
+            className="w-56 ml-2"
+            type="search"
+            placeholder="Search"
+            value={searchQuery}
+            onChange={handleSearchChange}
+          />
           <Button
             onClick={signedIn ? handleSignOut : () => setShowAuthModal(true)}
             className="ml-2 bg-blue-500 text-white hover:bg-blue-600 border border-input"
@@ -78,4 +65,3 @@ export function Header({ onSearch }: HeaderProps) {
 function onSearch(value: string) {
   throw new Error("Function not implemented.");
 }
-

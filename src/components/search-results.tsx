@@ -3,7 +3,7 @@
 import { Item } from "./item";
 
 interface SearchResultsProps {
-  recipes: any[]; // Replace `any[]` with your Recipe type if available
+  recipes: any[];
   searchQuery: string;
 }
 
@@ -13,7 +13,7 @@ export function SearchResults({ recipes, searchQuery }: SearchResultsProps) {
     [recipe.title, recipe.type, recipe.description]
       .join(" ")
       .toLowerCase()
-      .includes(searchQuery.toLowerCase())
+      .includes(searchQuery.toLowerCase()),
   );
 
   if (!filteredRecipes.length) {
@@ -25,7 +25,7 @@ export function SearchResults({ recipes, searchQuery }: SearchResultsProps) {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 m-2">
       {filteredRecipes.map((recipe) => (
         <Item
           key={recipe._id}
