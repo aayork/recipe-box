@@ -38,7 +38,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={wittgensteinVF.variable}>
+      <body className={wittgensteinVF.variable + "bg-background text-foreground"}>
         <UserProvider>
           <SidebarProvider>
             <AppSidebar />

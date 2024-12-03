@@ -33,12 +33,12 @@ export default function ProfilePage() {
 
   if (!signedIn) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 text-gray-800 p-6">
-        <div className="bg-white text-gray-900 p-8 rounded-lg shadow-md max-w-md w-full text-center">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[hsl(45,80%,85%)] text-[hsl(260,50%,40%)] p-6">
+        <div className="bg-[hsl(45,80%,90%)] text-[hsl(260,50%,40%)] p-8 rounded-lg shadow-md max-w-md w-full text-center">
           <h1 className="text-4xl font-bold mb-6">You are not signed in</h1>
           <Button
             onClick={() => setShowAuthModal(true)}
-            className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            className="w-full p-2 bg-[hsl(260,60%,80%)] text-[hsl(260,50%,40%)] rounded hover:bg-[hsl(260,60%,75%)]"
           >
             Sign In
           </Button>
@@ -51,8 +51,8 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 text-gray-800 p-6">
-      <div className="bg-white text-gray-900 p-8 rounded-lg shadow-md max-w-md w-full text-center">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-[hsl(45,80%,85%)] text-[hsl(260,50%,40%)] p-6">
+      <div className="bg-[hsl(45,80%,90%)] text-[hsl(260,50%,40%)] p-8 rounded-lg shadow-md max-w-md w-full text-center">
         <h1 className="text-4xl font-bold mb-6">
           {editMode ? "Edit Profile" : `${user?.username}'s Profile`}
         </h1>
@@ -65,7 +65,7 @@ export default function ProfilePage() {
           >
             <input
               type="email"
-              className="text-input mb-4 p-2 w-full border rounded text-black"
+              className="text-input mb-4 p-2 w-full border-[hsl(45,80%,90%)] rounded text-[hsl(260,50%,40%)] text:bg-[hsl(45,80%,90%)]"
               value={editedUser.email}
               onChange={(e) =>
                 setEditedUser({ ...editedUser, email: e.target.value })
@@ -74,7 +74,7 @@ export default function ProfilePage() {
             />
             <input
               type="text"
-              className="text-input mb-4 p-2 w-full border rounded text-black"
+              className="text-input mb-4 p-2 w-full border-[hsl(45,80%,90%)] rounded text-[hsl(260,50%,40%)] text:bg-[hsl(45,80%,90%)]"
               value={editedUser.username}
               onChange={(e) =>
                 setEditedUser({ ...editedUser, username: e.target.value })
@@ -83,7 +83,7 @@ export default function ProfilePage() {
             />
             <input
               type="password"
-              className="text-input mb-4 p-2 w-full border rounded text-black"
+              className="text-input mb-4 p-2 w-full border-[hsl(45,80%,90%)] rounded text-[hsl(260,50%,40%)] text:bg-[hsl(45,80%,90%)]"
               value={editedUser.password}
               onChange={(e) =>
                 setEditedUser({ ...editedUser, password: e.target.value })
@@ -92,13 +92,13 @@ export default function ProfilePage() {
             />
             <Button
               type="submit"
-              className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              className="w-full p-2 bg-[hsl(260,60%,80%)] text-[hsl(260,50%,40%)] rounded hover:bg-[hsl(260,60%,75%)]"
             >
               Save Changes
             </Button>
             <Button
               onClick={() => setEditMode(false)}
-              className="w-full p-2 bg-gray-500 text-white rounded hover:bg-gray-600 mt-2"
+              className="w-full p-2 bg-[hsl(260,50%,30%)] text-[hsl(45,80%,85%)] rounded hover:bg-[hsl(260,50%,25%)] mt-2"
             >
               Cancel
             </Button>
@@ -112,14 +112,8 @@ export default function ProfilePage() {
               <strong>Username:</strong> {user?.username}
             </p>
             <Button
-              onClick={() => setEditMode(true)}
-              className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-            >
-              Edit Profile
-            </Button>
-            <Button
               onClick={handleSignOut}
-              className="w-full p-2 bg-red-500 text-white rounded hover:bg-red-600 mt-2"
+              className="w-full p-2 bg-[hsl(330,80%,70%)] text-[hsl(260,50%,40%)] rounded hover:bg-[hsl(330,80%,65%)] mt-2"
             >
               Sign Out
             </Button>

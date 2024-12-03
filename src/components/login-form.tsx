@@ -59,6 +59,7 @@ export default function LoginForm({
         placeholder="Email"
         value={formData.email}
         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+        className="bg-[hsl(45,80%,90%)] text-[hsl(260,50%,40%)]"
         required
       />
       <Input
@@ -66,9 +67,10 @@ export default function LoginForm({
         placeholder="Password"
         value={formData.password}
         onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+        className="bg-[hsl(45,80%,90%)] text-[hsl(260,50%,40%)]"
         required
       />
-      <Button type="submit" className="w-full">
+      <Button type="submit" className="w-full hover:bg-[hsl(330,80%,80%)] bg-[hsl(330,80%,85%)]">
         Log In
       </Button>
       {message && (

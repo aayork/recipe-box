@@ -105,20 +105,20 @@ const AddRecipe: React.FC<AddRecipeProps> = ({
     <div
       className={
         isPage
-          ? "min-h-screen p-8"
+          ? "min-h-screen p-8 bg-[hsl(45,80%,85%)] text-[hsl(260,50%,40%)]"
           : "fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50"
       }
     >
       <div
         className={
           isPage
-            ? "bg-white p-8 rounded-lg max-w-lg mx-auto"
-            : "bg-white p-8 rounded-lg relative max-w-lg w-full"
+            ? "bg-[hsl(45,80%,90%)] text-[hsl(260,50%,40%)] p-8 rounded-lg max-w-lg mx-auto"
+            : "bg-[hsl(45,80%,90%)] text-[hsl(260,50%,40%)] p-8 rounded-lg relative max-w-lg w-full"
         }
       >
         {!isPage && (
           <button
-            className="absolute top-4 right-4 text-gray-500 hover:text-black text-lg"
+            className="absolute top-4 right-4 text-[hsl(260,50%,40%)] hover:text-black text-lg"
             onClick={onClose}
           >
             X
@@ -135,6 +135,7 @@ const AddRecipe: React.FC<AddRecipeProps> = ({
                 setName(e.target.value);
                 setIsFormTouched(true);
               }}
+              className="border-[hsl(45,80%,85%)] text-[hsl(260,50%,40%)] bg-[hsl(45,80%,85%)]"
             />
           </div>
 
@@ -147,6 +148,7 @@ const AddRecipe: React.FC<AddRecipeProps> = ({
                 setCookTime(e.target.value);
                 setIsFormTouched(true);
               }}
+              className="border-[hsl(45,80%,85%)] text-[hsl(260,50%,40%)] bg-[hsl(45,80%,85%)]"
             />
           </div>
 
@@ -159,12 +161,12 @@ const AddRecipe: React.FC<AddRecipeProps> = ({
                   value={ingredient}
                   onChange={handleChange(index)}
                   placeholder="Ingredient"
-                  className="my-1"
+                  className="border-[hsl(45,80%,85%)] text-[hsl(260,50%,40%)] bg-[hsl(45,80%,85%)]"
                 />
                 <Button
                   type="button"
                   onClick={() => handleRemoveIngredient(index)}
-                  className="ml-2 my-1 bg-red-500 hover:bg-red-600"
+                  className="ml-2 bg-[hsl(330,80%,85%)] hover:bg-[hsl(330,80%,75%)]"
                 >
                   <Trash2 />
                 </Button>
@@ -173,7 +175,7 @@ const AddRecipe: React.FC<AddRecipeProps> = ({
             <Button
               type="button"
               onClick={handleAddIngredient}
-              className="mt-2 bg-blue-500 hover:bg-blue-600"
+              className="mt-2 bg-[hsl(260,60%,80%)] hover:bg-[hsl(260,60%,75%)]"
             >
               <Plus /> Add Ingredient
             </Button>
@@ -188,7 +190,7 @@ const AddRecipe: React.FC<AddRecipeProps> = ({
                 setInstructions(e.target.value);
                 setIsFormTouched(true);
               }}
-              className="w-full h-32"
+              className="border-[hsl(45,80%,85%)] text-[hsl(260,50%,40%)] bg-[hsl(45,80%,85%)]"
             />
           </div>
 
@@ -201,7 +203,7 @@ const AddRecipe: React.FC<AddRecipeProps> = ({
                 setDescription(e.target.value);
                 setIsFormTouched(true);
               }}
-              className="w-full h-32"
+              className="border-[hsl(45,80%,85%)] text-[hsl(260,50%,40%)] bg-[hsl(45,80%,85%)]"
             />
           </div>
 
@@ -214,6 +216,7 @@ const AddRecipe: React.FC<AddRecipeProps> = ({
                 setType(e.target.value);
                 setIsFormTouched(true);
               }}
+              className="border-[hsl(45,80%,85%)] text-[hsl(260,50%,40%)] bg-[hsl(45,80%,85%)]"
             />
           </div>
 
@@ -226,12 +229,13 @@ const AddRecipe: React.FC<AddRecipeProps> = ({
                 setImageUrl(e.target.value);
                 setIsFormTouched(true);
               }}
+              className="border-[hsl(45,80%,85%)] text-[hsl(260,50%,40%)] bg-[hsl(45,80%,85%)]"
             />
           </div>
 
           <Button
             type="submit"
-            className="mt-4 bg-green-500 hover:bg-green-600 w-full"
+            className="mt-4 bg-[hsl(260,60%,80%)] hover:bg-[hsl(260,60%,75%)] w-full"
           >
             Save
           </Button>

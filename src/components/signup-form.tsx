@@ -56,6 +56,7 @@ export default function SignupForm({
         placeholder="Username"
         value={formData.username}
         onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+        className="bg-[hsl(45,80%,90%)] text-[hsl(260,50%,40%)]"
         required
       />
       <Input
@@ -63,6 +64,7 @@ export default function SignupForm({
         placeholder="Email"
         value={formData.email}
         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+        className="bg-[hsl(45,80%,90%)] text-[hsl(260,50%,40%)]"
         required
       />
       <Input
@@ -70,15 +72,16 @@ export default function SignupForm({
         placeholder="Password"
         value={formData.password}
         onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+        className="bg-[hsl(45,80%,90%)] text-[hsl(260,50%,40%)]"
         required
       />
       <Button
         type="submit"
-        className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        className="w-full hover:bg-[hsl(330,80%,80%)] bg-[hsl(330,80%,85%)]"
       >
         Sign Up
       </Button>
-      {message && <p className="w-full">{message}</p>}
+      {message && <p className="ml-2 bg-[hsl(45,80%,90%)] text-[hsl(260,50%,40%)] hover:bg-[hsl(260,60%,80%)]">{message}</p>}
     </form>
   );
 }

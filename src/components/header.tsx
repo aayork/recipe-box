@@ -42,7 +42,7 @@ export function Header({ onSearchAction }: HeaderProps) {
         </div>
         <div className="flex items-center">
           <Input
-            className="w-56 ml-2"
+            className="ml-2 bg-[hsl(45,80%,90%)] text-[hsl(260,50%,40%)] border border-[hsl(45,80%,90%)]"
             type="search"
             placeholder="Search"
             value={searchQuery}
@@ -50,7 +50,7 @@ export function Header({ onSearchAction }: HeaderProps) {
           />
           <Button
             onClick={signedIn ? handleSignOut : () => setShowAuthModal(true)}
-            className="ml-2 bg-blue-500 text-white hover:bg-blue-600 border border-input"
+            className="ml-2 bg-[hsl(45,80%,90%)] text-[hsl(260,50%,40%)] hover:bg-[hsl(260,60%,80%)]"
           >
             {signedIn ? "Sign Out" : "Sign In"}
           </Button>

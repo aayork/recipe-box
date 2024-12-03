@@ -62,7 +62,7 @@ const Home = () => {
         <h1 className="font-bold text-xl">New Recipes</h1>
         {signedIn && (
           <Link href="/add-recipe">
-            <button className="flex items-center gap-2 m-1 p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 border border-input">
+            <button className="flex items-center gap-2 m-1 p-2 ml-2 w-full hover:bg-[hsl(330,80%,80%)] bg-[hsl(330,80%,85%)] rounded-lg">
               <Plus size={16} />
               Add a Recipe
             </button>
