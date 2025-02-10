@@ -5,6 +5,7 @@ import { useUser } from "@/components/user-context";
 import { useState, useEffect } from "react";
 import { Item } from "@/components/item";
 import { Plus } from "lucide-react";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 export interface Recipe {
   _id: string;
@@ -25,7 +26,7 @@ const Home = () => {
   const { signedIn, user } = useUser(); // Assuming `user` contains the user's details including `_id`
 
   useEffect(() => {
-    if (!user?._id) return; // If user is not available, don't fetch
+    if (!user?._id) return;
 
     const fetchUserRecipes = async () => {
       try {
@@ -37,7 +38,6 @@ const Home = () => {
         }
         const data = await response.json();
 
-        // Ensure recipes are filtered for the current user
         const userRecipes = data.items.filter(
           (recipe: Recipe) => recipe.user === user._id,
         );
@@ -57,11 +57,12 @@ const Home = () => {
 
   return (
     <div>
-      <div className="flex items-center m-3">
-        <h1 className="font-bold text-xl">New Recipes</h1>
+      <div className="flex items-center space-x-2 m-1">
+        <SidebarTrigger className="" />
+        <h1 className="font-bold text-xl">My Recipes</h1>
         {signedIn && (
           <Link href="/add-recipe">
-            <button className="flex items-center gap-2 m-1 p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 border border-input">
+            <button className="flex items-center gap-2 p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 border border-input">
               <Plus size={16} />
               Add a Recipe
             </button>

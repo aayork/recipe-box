@@ -1,3 +1,5 @@
+"use client";
+
 import { Home, CircleUser, CookingPot, Heart } from "lucide-react";
 
 import {
@@ -10,8 +12,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-// Menu items.
 const items = [
   {
     title: "Home",
@@ -36,11 +39,32 @@ const items = [
 ];
 
 export function AppSidebar() {
+  const pathname = usePathname();
   return (
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Recipe Box</SidebarGroupLabel>
+          <SidebarGroupLabel>
+            Recipe Box
+            {pathname === "/" ? (
+              <img
+                src="/images/logo-transparent.png"
+                alt="Recipe Box Icon"
+                width={50}
+                height={50}
+              />
+            ) : (
+              <Link href="/" passHref>
+                <img
+                  src="/images/logo-transparent.png"
+                  alt="Recipe Box Icon"
+                  width={50}
+                  height={50}
+                  className="cursor-pointer"
+                />
+              </Link>
+            )}
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (

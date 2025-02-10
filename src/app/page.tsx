@@ -5,6 +5,8 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Item } from "@/components/item";
 import { Plus } from "lucide-react";
+import { Header } from "@/components/header";
+import { SearchResults } from "@/components/search-results";
 
 export interface Recipe {
   _id: string;
@@ -23,6 +25,7 @@ const Home = () => {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [error, setError] = useState<string | null>(null);
   const { signedIn } = useUser();
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   const [loading, setLoading] = useState(true);
 
@@ -54,6 +57,7 @@ const Home = () => {
 
   return (
     <div>
+      <Header onSearchAction={(query: string) => setSearchQuery(query)} />
       <div className="flex items-center m-3">
         <h1 className="font-bold text-xl">New Recipes</h1>
         {signedIn && (
@@ -65,22 +69,31 @@ const Home = () => {
           </Link>
         )}
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 m-2">
-        {recipes.map((recipe) => (
-          <Item
-            key={recipe._id}
-            id={recipe._id}
-            title={recipe.title}
-            description={recipe.description}
-            image={recipe.image}
-            user={recipe.user}
-            ingredients={recipe.ingredients}
-            instructions={recipe.instructions}
-            cookTime={recipe.cookTime}
-            type={recipe.type}
-          />
-        ))}
-      </div>
+      {error && <div className="text-red-500 text-center">{error}</div>}
+      {loading ? (
+        <div className="text-center text-gray-500">Loading...</div>
+      ) : searchQuery ? (
+        // Render filtered recipes when there's a search query
+        <SearchResults recipes={recipes} searchQuery={searchQuery} />
+      ) : (
+        // Render all recipes when there's no search query
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 m-2">
+          {recipes.map((recipe) => (
+            <Item
+              key={recipe._id}
+              id={recipe._id}
+              title={recipe.title}
+              description={recipe.description}
+              image={recipe.image}
+              user={recipe.user}
+              ingredients={recipe.ingredients}
+              instructions={recipe.instructions}
+              cookTime={recipe.cookTime}
+              type={recipe.type}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

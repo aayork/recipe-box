@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
-import { Header } from "@/components/header";
 import { UserProvider } from "@/components/user-context";
 
 const baskervvilleSC = localFont({
@@ -43,13 +42,7 @@ export default function RootLayout({
         <UserProvider>
           <SidebarProvider>
             <AppSidebar />
-            <main className="w-full">
-              <div className="flex items-center">
-                <SidebarTrigger className="ml-1" />
-                <Header />
-              </div>
-              {children}
-            </main>
+            <main className="w-full">{children}</main>
           </SidebarProvider>
         </UserProvider>
       </body>

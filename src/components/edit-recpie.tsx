@@ -8,7 +8,7 @@ import { Plus, Trash2 } from "lucide-react";
 interface EditRecipeProps {
   onSave: (newRecipe: any) => void;
   onClose: () => void;
-  isPage?: boolean; // Distinguish between modal and page usage
+  isPage?: boolean;
   recipeId: string;
 }
 
@@ -26,7 +26,7 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
   const [type, setType] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [isFormTouched, setIsFormTouched] = useState(false);
-  const [loading, setLoading] = useState(true); // To track loading state
+  const [loading, setLoading] = useState(true);
   const { user, signedIn } = useUser();
 
   // Fetch the existing recipe data
@@ -37,7 +37,7 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
         if (!response.ok) {
           throw new Error("Failed to fetch the recipe data.");
         }
-        const { item } = await response.json(); // Destructure 'item' from response
+        const { item } = await response.json();
         console.log("Fetched Recipe Item:", item);
 
         setName(item.title || "");

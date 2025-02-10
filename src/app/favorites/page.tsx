@@ -3,6 +3,7 @@
 import { useUser } from "@/components/user-context";
 import { useState, useEffect } from "react";
 import { Item } from "@/components/item";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 export interface Recipe {
   _id: string;
@@ -48,7 +49,10 @@ const Favorites = () => {
 
   return (
     <div>
-      <h1 className="font-bold text-xl m-3">Your Favorites</h1>
+      <div className="flex">
+        <SidebarTrigger className="m-1" />
+        <h1 className="font-bold text-xl my-2">Your Favorites</h1>
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 m-2">
         {favorites.length > 0 ? (
           favorites.map((recipe) => (

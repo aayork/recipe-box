@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { User } from "@/models/UserSchema";
 
 // Get the favorite recipes for a user
-export async function GET(request: Request, { params }: { params: { userid: string } }) {
+export async function GET(request: Request, props: { params: Promise<{ userid: string }> }) {
+  const params = await props.params;
   try {
     const { userid } = params;
     const user = await User.findById(userid).populate("favorites");
@@ -17,7 +18,8 @@ export async function GET(request: Request, { params }: { params: { userid: stri
 }
 
 // Add a recipe to the user's favorites
-export async function POST(request: Request, { params }: { params: { userid: string } }) {
+export async function POST(request: Request, props: { params: Promise<{ userid: string }> }) {
+  const params = await props.params;
   try {
     const { userid } = params;
     const { recipeId } = await request.json();
@@ -40,7 +42,8 @@ export async function POST(request: Request, { params }: { params: { userid: str
 }
 
 // Remove a recipe from the user's favorites
-export async function DELETE(request: Request, { params }: { params: { userid: string } }) {
+export async function DELETE(request: Request, props: { params: Promise<{ userid: string }> }) {
+  const params = await props.params;
   try {
     const { userid } = params;
     const { recipeId } = await request.json();
